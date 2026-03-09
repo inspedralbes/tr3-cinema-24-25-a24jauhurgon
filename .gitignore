@@ -1,0 +1,87 @@
+# Root .gitignore for TR3 Cinema / Last24BCN Project
+
+# Dependencies (Global)
+node_modules/
+**/node_modules/
+vendor/
+**/vendor/
+
+# Environment and Secrets
+.env
+.env.*
+.env.local
+.env.production
+.env.development
+!.env.prod.example
+
+# Documentation and Research (Internal)
+doc/
+temp_skills_repo/
+node_modules/
+**/node_modules/
+
+# AI Agent and Scratch files
+.agent/
+.agents/
+.gemini/
+/tmp/
+*.log
+git_statusraw.txt
+untracked_files_final.txt
+
+# PHP / Composer artifacts
+composer.phar
+**/composer-setup.php
+**/composer.lock
+
+# IDEs and OS files
+.vscode/
+.idea/
+.DS_Store
+.editorconfig
+**/.editorconfig
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Build outputs and generated files
+frontend/dist/
+dist/
+**/dist/
+**/dist-ssr/
+backend/public/build/
+backend/public/hot/
+backend/storage/*.key
+**/*.pdf
+*.pdf
+
+# Laravel Framework and Storage (Backend)
+backend/storage/framework/cache/data/*
+backend/storage/framework/sessions/*
+backend/storage/framework/testing/*
+backend/storage/framework/views/*
+backend/storage/app/public/*
+backend/storage/db.sqlite
+.phpunit.result.cache
+!backend/storage/framework/cache/data/.gitignore
+!backend/storage/framework/sessions/.gitignore
+!backend/storage/framework/testing/.gitignore
+!backend/storage/framework/views/.gitignore
+
+# Testing and Cypress
+cypress/videos/
+cypress/screenshots/
+
+# Lockfiles (Global - per user request)
+*.lock
+**/package-lock.json
+package-lock.json
+yarn-error.log*
+
+# Database and Storage
+last24_dbdata/
+*.sqlite
+**/*.sqlite

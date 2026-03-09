@@ -1,16 +1,31 @@
-# transversals
-Esquema mínim de carpetes pels projectes transversals
+# ✈️ Last24BCN — Vols d'Última Hora
 
-És obligatori seguir aquesta estructura tot i que la podeu ampliar.
+**La teva passarel·la definitiva per aconseguir els bitllets d'avió més barats des de Barcelona just abans d'enlairar-se.**
 
-## Atenció
-Un cop comenceu heu de canviar aquesta explicació amb la corresponent al vostre projecte (utilitzant markdown)
+Last24BCN és una plataforma web innovadora diseñada per a la venda de vols "Last-Minute" des de l'aeroport del Prat. L'aplicació simula l'experiència real d'un aeroport amb cua de compra, mapes de seients interactius i actualitzacions en temps real.
 
-# Aquest fitxer ha de contenir com a mínim:
- * Nom dels integrants
- * Nom del projecte
- * Petita descripció
- * Adreça del gestor de tasques (taiga, jira, trello...)
- * Adreça del prototip gràfic del projecte (Penpot, figma, moqups...)
- * URL de producció (quan la tingueu)
- * Estat: (explicació d'en quin punt està)
+## ✨ Funcionalitats Clau
+
+- 🛫 **Cartellera Dinàmica**: Només els vols més pròxims (properes 24h) per garantir l'exclusivitat last-minute.
+- 🎟️ **Waiting Room Virtual**: Gestió concurrent de l'accés a la compra per evitar saturació del sistema.
+- 💺 **Live Seatmap**: Selecció de seients interactiva amb actualització instantània a tots els usuaris via WebSockets.
+- 🔒 **Clients Premium & Socis**: Accés exclusiu a First Class i descomptes aplicats automàticament.
+- 🎫 **Bitllet Digital Seguro**: Generació instantània de PDF amb codi QR xifrat enviat per correu electrònic.
+- 🛂 **Torre de Control (Admin)**: Panell de monitorització en viu de vols, passatgers i escàner de check-in per QR.
+
+## 🛠️ Tecnologies Principals
+- **Frontend**: Vue 3, Pinia, Vite, TailwindCSS.
+- **Backend**: Laravel 11, Sanctum, Socialite (Google Login).
+- **Temps Real**: Node.js + Socket.IO.
+- **Infraestructura**: Docker & Nginx (SSL/HTTPS).
+
+## 📚 Documentació Detallada
+Per a més informació, consulta els nostres guies específiques:
+- 📖 [**Guia de Desplegament i Ports**](README_DEPLOY.md): Com aixecar el projecte i detalls del servidor.
+- ⚙️ [**Detalls Tècnics i API**](README_TECH.md): Arquitectura, endpoints i flux de dades en temps real.
+
+## 👤 Autor
+Desenvolupat per **Héctor Jau Hurgon** (@a24jauhurgon) com a projecte TR3 Cinema 24-25.
+
+---
+🔗 **Accés a l'App**: [last24bcn.daw.inspedralbes.cat:8445](https://last24bcn.daw.inspedralbes.cat:8445)
