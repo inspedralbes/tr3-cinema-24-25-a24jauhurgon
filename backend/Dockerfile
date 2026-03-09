@@ -33,5 +33,5 @@ RUN composer install --no-interaction --optimize-autoloader || true
 # Expose port
 EXPOSE 8000
 
-# Start application and ensure dependencies are installed
-CMD ["sh", "-c", "composer install --no-interaction --optimize-autoloader && php artisan serve --host=0.0.0.0 --port=8000"]
+# Start application
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
