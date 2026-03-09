@@ -3,7 +3,7 @@ name: Deploy to Production
 on:
   push:
     branches:
-      - prod
+      - main
 
 jobs:
   deploy:
@@ -21,8 +21,17 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd ~/tr3-cinema-24-25-a24jauhurgon
-            git checkout prod
-            git pull origin prod
+            git checkout main
+            git pull origin main
+            export APP_KEY="${{ secrets.APP_KEY }}"
+            export GOOGLE_CLIENT_ID="${{ secrets.GOOGLE_CLIENT_ID }}"
+            export GOOGLE_CLIENT_SECRET="${{ secrets.GOOGLE_CLIENT_SECRET }}"
+            export MAIL_HOST="${{ secrets.MAIL_HOST }}"
+            export MAIL_PORT="${{ secrets.MAIL_PORT }}"
+            export MAIL_USERNAME="${{ secrets.MAIL_USERNAME }}"
+            export MAIL_PASSWORD="${{ secrets.MAIL_PASSWORD }}"
+            export MAIL_ENCRYPTION="${{ secrets.MAIL_ENCRYPTION }}"
+            export MAIL_FROM_ADDRESS="${{ secrets.MAIL_FROM_ADDRESS }}"
             docker-compose -f docker-compose.prod.yml up -d --build
             docker exec last24_backend php artisan migrate --force
             docker exec last24_backend php artisan db:seed --force
