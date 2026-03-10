@@ -54,11 +54,16 @@ jobs:
             docker compose -f docker-compose.prod.yml up -d --build
             docker exec last24_backend php artisan migrate --force
             docker exec last24_backend php artisan db:seed --force
-            docker exec last24_backend php artisan config:cache
+            docker exec last24_backend php artisan config:clear
+            docker exec last24_backend php artisan cache:clear
+            docker exec last24_backend php artisan view:clear
             docker exec last24_backend php artisan route:cache
+            docker exec last24_backend php artisan config:cache
             echo "--- ESTAT DELS CONTENIDORS ---"
             docker ps
             echo "--- LOGS DEL BACKEND (ÚLTIMS 30) ---"
             docker logs last24_backend --tail 30
+            echo "--- LARAVEL LOG (storage/logs/laravel.log) ---"
+            docker exec last24_backend tail -n 50 storage/logs/laravel.log || echo "No laravel.log found yet."
             echo "--- LOGS DEL FRONTEND ---"
             docker logs last24_frontend --tail 20
