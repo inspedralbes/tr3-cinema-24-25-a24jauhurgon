@@ -1,29 +1,30 @@
-FROM node:20-alpine
-
+# Stage 1: Build
+FROM node:20-alpine AS build-stage
 WORKDIR /app
-
-# Copy package files
 COPY package*.json ./
-
-# Install dependencies
 RUN npm install
-
-# Copy the rest of the source code
 COPY . .
 
-# Build-time arguments for Vite
 ARG VITE_API_BASE_URL
 ARG VITE_SOCKET_URL
-
-# Set environment variables for the build process
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 ENV VITE_SOCKET_URL=$VITE_SOCKET_URL
 
-# Build frontend
 RUN npm run build
 
-# Install a simple server to serve the build
-RUN npm install -g http-server
+# Stage 2: Production with Nginx
+FROM nginx:stable-alpine AS production-stage
+COPY --from=build-stage /app/dist /usr/share/nginx/html
 
-# Serve the dist folder on port 8080 (interface 0.0.0.0 is critical for Docker)
-CMD ["http-server", "dist", "-p", "8080", "-a", "0.0.0.0", "--proxy", "http://0.0.0.0:8080?"]
+# SPA Routing config for internal Nginx
+RUN printf 'server {\n\
+    listen 80;\n\
+    location / {\n\
+    root /usr/share/nginx/html;\n\
+    index index.html;\n\
+    try_files $uri $uri/ /index.html;\n\
+    }\n\
+    }' > /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
