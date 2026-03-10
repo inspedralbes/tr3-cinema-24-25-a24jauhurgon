@@ -50,14 +50,16 @@ jobs:
             echo "DB_DATABASE=ultimahorabcn_db" >> backend/.env
             echo "DB_USERNAME=root" >> backend/.env
             echo "DB_PASSWORD=password" >> backend/.env
-            echo "FRONTEND_URL=https://last24bcn.daw.inspedralbes.cat" >> backend/.env
-            echo "CORS_ALLOWED_ORIGINS=https://last24bcn.daw.inspedralbes.cat" >> backend/.env
-            echo "APP_URL=https://last24bcn.daw.inspedralbes.cat" >> backend/.env
-            echo "GOOGLE_REDIRECT_URI=https://last24bcn.daw.inspedralbes.cat/api/auth/google/callback" >> backend/.env
+            # Actualitzar o afegir variables al .env sense duplicats
+            touch backend/.env
+            sed -i '/^FRONTEND_URL=/d' backend/.env && echo "FRONTEND_URL=https://last24bcn.daw.inspedralbes.cat" >> backend/.env
+            sed -i '/^CORS_ALLOWED_ORIGINS=/d' backend/.env && echo "CORS_ALLOWED_ORIGINS=https://last24bcn.daw.inspedralbes.cat" >> backend/.env
+            sed -i '/^APP_URL=/d' backend/.env && echo "APP_URL=https://last24bcn.daw.inspedralbes.cat" >> backend/.env
+            sed -i '/^APP_ENV=/d' backend/.env && echo "APP_ENV=production" >> backend/.env
+            sed -i '/^GOOGLE_REDIRECT_URI=/d' backend/.env && echo "GOOGLE_REDIRECT_URI=https://last24bcn.daw.inspedralbes.cat/api/auth/google/callback" >> backend/.env
             
             echo "--- VERIFICACIÓ .ENV AL HOST ---"
-            grep "_URL" backend/.env
-            grep "REDIRECT_URI" backend/.env
+            grep -E "_URL|REDIRECT_URI" backend/.env
             
             # Esborrar caché local abans de pujar contenidors (vital si es copia el directori)
             rm -f backend/bootstrap/cache/*.php

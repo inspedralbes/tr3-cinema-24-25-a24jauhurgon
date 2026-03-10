@@ -120,7 +120,10 @@ class AuthController extends Controller
      */
     public function googleRedirect()
     {
-        return \Laravel\Socialite\Facades\Socialite::driver('google')->stateless()->redirect();
+        return \Laravel\Socialite\Facades\Socialite::driver('google')
+            ->stateless()
+            ->redirectUrl(config('services.google.redirect'))
+            ->redirect();
     }
 
     /**
