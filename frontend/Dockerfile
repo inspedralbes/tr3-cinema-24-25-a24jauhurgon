@@ -14,6 +14,8 @@ COPY . .
 # Build frontend
 RUN npm run build
 
-# Stage de serve per mantenir el contenidor viu (opcional si usem volums, però útil per debug)
-# En aquest cas, simplement farem que el contenidor es quedi esperant
-CMD ["sh", "-c", "echo 'Frontend build complete. Files are in /app/dist' && tail -f /dev/null"]
+# Copy build to a temporary location inside the image
+RUN cp -r dist dist_backup
+
+# At runtime, copy files to the shared volume and keep alive
+CMD ["sh", "-c", "cp -r /app/dist_backup/. /app/dist/ && echo 'Files synced to /var/www' && tail -f /dev/null"]
