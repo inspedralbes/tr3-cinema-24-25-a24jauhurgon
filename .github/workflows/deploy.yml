@@ -27,29 +27,29 @@ jobs:
               git clone https://github.com/inspedralbes/tr3-cinema-24-25-a24jauhurgon.git .
             fi
             git fetch origin
-            git checkout main
+            git reset --hard origin/main
             # Generar fitxer .env real al servidor perquè sigui persistent
-            echo "APP_KEY=${{ secrets.APP_KEY }}" > .env
-            echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
-            echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
-            echo "MAIL_HOST=${{ secrets.MAIL_HOST }}" >> .env
-            echo "MAIL_PORT=${{ secrets.MAIL_PORT }}" >> .env
-            echo "MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}" >> .env
-            echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> .env
-            echo "MAIL_ENCRYPTION=${{ secrets.MAIL_ENCRYPTION }}" >> .env
-            echo "MAIL_FROM_ADDRESS=${{ secrets.MAIL_FROM_ADDRESS }}" >> .env
-            echo "APP_DEBUG=true" >> .env
-            echo "LOG_CHANNEL=stderr" >> .env
-            echo "DB_CONNECTION=mysql" >> .env
-            echo "DB_HOST=db" >> .env
-            echo "DB_PORT=3306" >> .env
-            echo "DB_DATABASE=ultimahorabcn_db" >> .env
-            echo "DB_USERNAME=root" >> .env
-            echo "DB_PASSWORD=password" >> .env
-            echo "FRONTEND_URL=https://last24bcn.daw.inspedralbes.cat" >> .env
-            echo "CORS_ALLOWED_ORIGINS=https://last24bcn.daw.inspedralbes.cat" >> .env
-            echo "APP_URL=https://last24bcn.daw.inspedralbes.cat" >> .env
-            echo "GOOGLE_REDIRECT_URI=https://last24bcn.daw.inspedralbes.cat/api/auth/google/callback" >> .env
+            echo "APP_KEY=${{ secrets.APP_KEY }}" > backend/.env
+            echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> backend/.env
+            echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> backend/.env
+            echo "MAIL_HOST=${{ secrets.MAIL_HOST }}" >> backend/.env
+            echo "MAIL_PORT=${{ secrets.MAIL_PORT }}" >> backend/.env
+            echo "MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}" >> backend/.env
+            echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> backend/.env
+            echo "MAIL_ENCRYPTION=${{ secrets.MAIL_ENCRYPTION }}" >> backend/.env
+            echo "MAIL_FROM_ADDRESS=${{ secrets.MAIL_FROM_ADDRESS }}" >> backend/.env
+            echo "APP_DEBUG=true" >> backend/.env
+            echo "LOG_CHANNEL=stderr" >> backend/.env
+            echo "DB_CONNECTION=mysql" >> backend/.env
+            echo "DB_HOST=db" >> backend/.env
+            echo "DB_PORT=3306" >> backend/.env
+            echo "DB_DATABASE=ultimahorabcn_db" >> backend/.env
+            echo "DB_USERNAME=root" >> backend/.env
+            echo "DB_PASSWORD=password" >> backend/.env
+            echo "FRONTEND_URL=https://last24bcn.daw.inspedralbes.cat" >> backend/.env
+            echo "CORS_ALLOWED_ORIGINS=https://last24bcn.daw.inspedralbes.cat" >> backend/.env
+            echo "APP_URL=https://last24bcn.daw.inspedralbes.cat" >> backend/.env
+            echo "GOOGLE_REDIRECT_URI=https://last24bcn.daw.inspedralbes.cat/api/auth/google/callback" >> backend/.env
 
             docker compose -f docker-compose.prod.yml down --remove-orphans
             docker compose -f docker-compose.prod.yml up -d --build
@@ -58,6 +58,11 @@ jobs:
             docker exec last24_backend php artisan config:clear
             docker exec last24_backend php artisan cache:clear
             docker exec last24_backend php artisan view:clear
+            docker exec last24_backend php artisan route:clear
+            echo "--- LLISTAT DE RUTES (API) ---"
+            docker exec last24_backend php artisan route:list --path=api
+            echo "--- VERIFICACIÓ FITXER RUTES ---"
+            docker exec last24_backend cat routes/api.php | grep -C 5 "health-check"
             # docker exec last24_backend php artisan route:cache
             # docker exec last24_backend php artisan config:cache
             echo "--- ESTAT DELS CONTENIDORS ---"
