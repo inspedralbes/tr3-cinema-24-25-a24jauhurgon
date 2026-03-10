@@ -21,8 +21,9 @@ services:
     restart: unless-stopped
     ports:
       - "8005:8000"
-    # Volumes eliminats per producció (fem servir el codi dins la imatge)
     environment:
+      APP_KEY: ${APP_KEY}
+      APP_DEBUG: "false"
       DB_CONNECTION: mysql
       DB_HOST: db
       DB_PORT: 3306
@@ -31,7 +32,15 @@ services:
       DB_PASSWORD: password
       FRONTEND_URL: https://last24bcn.daw.inspedralbes.cat
       CORS_ALLOWED_ORIGINS: https://last24bcn.daw.inspedralbes.cat
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       GOOGLE_REDIRECT_URI: https://last24bcn.daw.inspedralbes.cat/api/auth/google/callback
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_ENCRYPTION: ${MAIL_ENCRYPTION}
+      MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS}
     depends_on:
       - db
 
@@ -43,21 +52,20 @@ services:
     restart: unless-stopped
     ports:
       - "3005:3001"
-    # Volumes eliminats per producció
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: /api
+        VITE_SOCKET_URL: /
     container_name: last24_frontend
     restart: unless-stopped
     ports:
       - "5005:8080"
-    # Volums eliminats per producció (fem servir el build intern)
     environment:
       - CHOKIDAR_USEPOLLING=true
-      - VITE_API_BASE_URL=/api
-      - VITE_SOCKET_URL=/
     depends_on:
       - backend
       - socket

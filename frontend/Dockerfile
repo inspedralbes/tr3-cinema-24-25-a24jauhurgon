@@ -11,6 +11,14 @@ RUN npm install
 # Copy the rest of the source code
 COPY . .
 
+# Build-time arguments for Vite
+ARG VITE_API_BASE_URL
+ARG VITE_SOCKET_URL
+
+# Set environment variables for the build process
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+ENV VITE_SOCKET_URL=$VITE_SOCKET_URL
+
 # Build frontend
 RUN npm run build
 
