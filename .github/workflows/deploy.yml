@@ -41,4 +41,3 @@ jobs:
             docker exec last24_backend php artisan db:seed --force
             docker exec last24_backend php artisan config:cache
             docker exec last24_backend php artisan route:cache
-            docker exec last24_backend php artisan view:cache

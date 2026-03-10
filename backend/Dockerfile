@@ -30,6 +30,14 @@ COPY . /app
 # Install dependencies (ignoring errors if vendor exists with weird perms)
 RUN composer install --no-interaction --optimize-autoloader || true
 
+# Create storage directory structure
+RUN mkdir -p storage/framework/cache/data \
+    storage/framework/sessions \
+    storage/framework/testing \
+    storage/framework/views \
+    storage/app/public && \
+    chmod -R 775 storage bootstrap/cache
+
 # Expose port
 EXPOSE 8000
 
