@@ -1,13 +1,13 @@
 # Redirecció automàtica de HTTP (80) a HTTPS (443)
 server {
     listen 80;
-    server_name last24bcn.daw.inspedralbes.cat;
+    server_name ${NGINX_HOST};
     return 301 https://$host$request_uri;
 }
 
 server {
     listen 443 ssl;
-    server_name _;
+    server_name ${NGINX_HOST};
 
     # Rutes dels certificats auto-signats generats per entrypoint.sh
     ssl_certificate /etc/nginx/ssl/cert.pem;
