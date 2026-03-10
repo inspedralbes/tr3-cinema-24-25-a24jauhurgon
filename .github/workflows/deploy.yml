@@ -68,7 +68,9 @@ jobs:
             docker exec last24_backend php artisan view:clear
             docker exec last24_backend php artisan route:cache
             docker exec last24_backend php artisan config:cache
-            sudo -n nginx -t && sudo -n systemctl reload nginx || echo "Nginx reload skipped or failed"
+            echo "--- VERIFICACIÓ CONFIGURACIÓ ---"
+            docker exec last24_backend php artisan config:show app | grep frontend_url || echo "frontend_url not found in config"
+            sudo -n nginx -t && sudo -n systemctl reload nginx || true
             echo "--- ESTAT DELS CONTENIDORS ---"
             docker ps
             echo "--- LOGS DEL BACKEND (ÚLTIMS 10) ---"
