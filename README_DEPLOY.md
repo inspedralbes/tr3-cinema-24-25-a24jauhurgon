@@ -9,14 +9,15 @@ Aquest document detalla com posar en marxa l'aplicació tant en local com en el 
 ## 🌐 Configuració de Ports (Entorn Multi-tenant)
 Per defecte, l'aplicació està configurada per utilitzar ports acabats en **5** per evitar conflictes al servidor compartit `91.99.222.189`.
 
-| Servei | Port Públic (Host) | Port Intern (Contenidor) |
-|--------|-------------------|-------------------------|
-| **Web (HTTPS)** | `8445` | `443` |
-| **Web (HTTP)** | `8005` | `80` |
-| **Base de Dades** | `33065` | `3306` |
+| Servei | Port Públic (Host) | Port Intern (Docker) | Port Proxy (Local) |
+|--------|-------------------|----------------------|--------------------|
+| **Web (HTTPS)** | `443` | - | `5005` |
+| **API (Laravel)** | - | `8000` | `8005` |
+| **Realtime** | - | `3001` | `3005` |
+| **Base de Dades** | `33065` | `3306` | - |
 
 > [!NOTE]
-> Els serveis de Backend (Laravel) i Sockets (Node.js) no s'exposen directament a Internet; tota la comunicació passa a través del proxy segur de **Nginx**.
+> En aquest nou model de producció, un Nginx extern del host gestiona l'SSL i redirigeix el tràfic als ports `5005`, `8005` i `3005`.
 
 ## 🚀 Desplegament amb Docker Compose
 
