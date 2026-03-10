@@ -28,7 +28,25 @@ jobs:
             fi
             git fetch origin
             git checkout main
-            git pull origin main
+            # Generar fitxer .env real al servidor perquè sigui persistent
+            echo "APP_KEY=${{ secrets.APP_KEY }}" > .env
+            echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
+            echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
+            echo "MAIL_HOST=${{ secrets.MAIL_HOST }}" >> .env
+            echo "MAIL_PORT=${{ secrets.MAIL_PORT }}" >> .env
+            echo "MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}" >> .env
+            echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> .env
+            echo "MAIL_ENCRYPTION=${{ secrets.MAIL_ENCRYPTION }}" >> .env
+            echo "MAIL_FROM_ADDRESS=${{ secrets.MAIL_FROM_ADDRESS }}" >> .env
+            echo "APP_DEBUG=false" >> .env
+            echo "DB_CONNECTION=mysql" >> .env
+            echo "DB_HOST=db" >> .env
+            echo "DB_PORT=3306" >> .env
+            echo "DB_DATABASE=ultimahorabcn_db" >> .env
+            echo "DB_USERNAME=root" >> .env
+            echo "DB_PASSWORD=password" >> .env
+            echo "FRONTEND_URL=https://last24bcn.daw.inspedralbes.cat" >> .env
+            echo "CORS_ALLOWED_ORIGINS=https://last24bcn.daw.inspedralbes.cat" >> .env
             echo "APP_URL=https://last24bcn.daw.inspedralbes.cat" >> .env
             echo "GOOGLE_REDIRECT_URI=https://last24bcn.daw.inspedralbes.cat/api/auth/google/callback" >> .env
 
