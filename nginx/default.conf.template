@@ -1,13 +1,13 @@
 # Redirecció automàtica de HTTP (80) a HTTPS (443)
 server {
     listen 80;
-    server_name ${NGINX_HOST};
+    server_name ${NGINX_HOST} 91.99.222.189 localhost;
     return 301 https://$host$request_uri;
 }
 
 server {
-    listen 443 ssl;
-    server_name ${NGINX_HOST};
+    listen 443 ssl default_server;
+    server_name ${NGINX_HOST} 91.99.222.189 localhost;
 
     # Rutes dels certificats auto-signats generats per entrypoint.sh
     ssl_certificate /etc/nginx/ssl/cert.pem;
