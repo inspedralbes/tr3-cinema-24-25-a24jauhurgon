@@ -38,7 +38,8 @@ jobs:
             echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> .env
             echo "MAIL_ENCRYPTION=${{ secrets.MAIL_ENCRYPTION }}" >> .env
             echo "MAIL_FROM_ADDRESS=${{ secrets.MAIL_FROM_ADDRESS }}" >> .env
-            echo "APP_DEBUG=false" >> .env
+            echo "APP_DEBUG=true" >> .env
+            echo "LOG_CHANNEL=stderr" >> .env
             echo "DB_CONNECTION=mysql" >> .env
             echo "DB_HOST=db" >> .env
             echo "DB_PORT=3306" >> .env
