@@ -65,6 +65,8 @@ services:
       dockerfile: Dockerfile
     container_name: last24_nginx
     restart: unless-stopped
+    environment:
+      - NGINX_HOST=last24bcn.daw.inspedralbes.cat
     ports:
       - "8005:80"
       - "8445:443"
