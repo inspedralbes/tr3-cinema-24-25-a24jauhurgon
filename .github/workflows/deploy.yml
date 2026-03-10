@@ -41,3 +41,9 @@ jobs:
             docker exec last24_backend php artisan db:seed --force
             docker exec last24_backend php artisan config:cache
             docker exec last24_backend php artisan route:cache
+            echo "--- ESTAT DELS CONTENIDORS ---"
+            docker ps
+            echo "--- LOGS DE NGINX ---"
+            docker logs last24_nginx --tail 20
+            echo "--- LOGS DEL FRONTEND ---"
+            docker logs last24_frontend --tail 20
