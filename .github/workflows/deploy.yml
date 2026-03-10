@@ -68,6 +68,7 @@ jobs:
             docker exec last24_backend php artisan view:clear
             docker exec last24_backend php artisan route:cache
             docker exec last24_backend php artisan config:cache
+            sudo systemctl reload nginx
             echo "--- ESTAT DELS CONTENIDORS ---"
             docker ps
             echo "--- LOGS DEL BACKEND (ÚLTIMS 10) ---"
