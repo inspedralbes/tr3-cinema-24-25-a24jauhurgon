@@ -53,8 +53,12 @@ jobs:
 
             docker compose -f docker-compose.prod.yml down --remove-orphans
             docker compose -f docker-compose.prod.yml up -d --build
-            docker exec last24_backend php artisan migrate --force
-            docker exec last24_backend php artisan db:seed --force
+            
+            echo "--- ESPERANT QUE EL BACKEND I DB ESTIGUIN LLESTOS ---"
+            sleep 15
+            
+            docker exec last24_backend php artisan migrate --force --no-interaction
+            docker exec last24_backend php artisan db:seed --force --no-interaction
             docker exec last24_backend php artisan config:clear
             docker exec last24_backend php artisan cache:clear
             docker exec last24_backend php artisan view:clear
