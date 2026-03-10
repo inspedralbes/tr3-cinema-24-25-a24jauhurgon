@@ -38,6 +38,7 @@ jobs:
             export MAIL_PASSWORD="${{ secrets.MAIL_PASSWORD }}"
             export MAIL_ENCRYPTION="${{ secrets.MAIL_ENCRYPTION }}"
             export MAIL_FROM_ADDRESS="${{ secrets.MAIL_FROM_ADDRESS }}"
+            docker compose -f docker-compose.prod.yml down --remove-orphans
             docker compose -f docker-compose.prod.yml up -d --build
             docker exec last24_backend php artisan migrate --force
             docker exec last24_backend php artisan db:seed --force
