@@ -58,8 +58,8 @@ jobs:
             docker exec last24_backend php artisan config:clear
             docker exec last24_backend php artisan cache:clear
             docker exec last24_backend php artisan view:clear
-            docker exec last24_backend php artisan route:cache
-            docker exec last24_backend php artisan config:cache
+            # docker exec last24_backend php artisan route:cache
+            # docker exec last24_backend php artisan config:cache
             echo "--- ESTAT DELS CONTENIDORS ---"
             docker ps
             echo "--- LOGS DEL BACKEND (ÚLTIMS 30) ---"
