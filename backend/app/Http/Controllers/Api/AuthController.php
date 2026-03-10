@@ -61,8 +61,6 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        \Log::info('Intent de login per: ' . $request->email);
-        
         $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
@@ -71,30 +69,17 @@ class AuthController extends Controller
         $usuari = User::where('email', $request->email)->first();
 
         if (!$usuari || !Hash::check($request->password, $usuari->password)) {
-            \Log::warning('Login fallit (credencials): ' . $request->email);
             throw ValidationException::withMessages([
                 'email' => ['Les credencials no són correctes.'],
             ]);
         }
 
-        try {
-            \Log::info('Creant token per usuari ID: ' . $usuari->id);
-            $token = $usuari->createToken('auth-token')->plainTextToken;
-            \Log::info('Token creat correctament');
+        $token = $usuari->createToken('auth-token')->plainTextToken;
 
-            return response()->json([
-                'usuari' => $usuari,
-                'token' => $token,
-            ]);
-        } catch (\Exception $e) {
-            \Log::error('ERROR CRÍTIC EN LOGIN: ' . $e->getMessage());
-            \Log::error($e->getTraceAsString());
-            return response()->json([
-                'error' => 'Error intern del servidor al crear el token.',
-                'missatge' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ], 500);
-        }
+        return response()->json([
+            'usuari' => $usuari,
+            'token' => $token,
+        ]);
     }
 
     /**

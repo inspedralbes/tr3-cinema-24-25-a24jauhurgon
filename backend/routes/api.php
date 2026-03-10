@@ -8,29 +8,11 @@ use App\Http\Controllers\Api\CuaController;
 use App\Http\Controllers\Api\CompraController;
 use App\Http\Controllers\Api\AdminController;
 
-// --- Diagnòstic ---
-Route::get('/health-check', function () {
-    try {
-        $db = \DB::connection()->getPdo() ? 'Connected' : 'Failed';
-        $tables = \DB::select('SHOW TABLES');
-        return response()->json([
-            'status' => 'OK',
-            'database' => $db,
-            'tables' => count($tables),
-            'app_debug' => config('app.debug'),
-            'log_channel' => config('logging.default'),
-            'env_app_debug' => env('APP_DEBUG'),
-            'php_version' => PHP_VERSION,
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'ERROR',
-            'message' => $e->getMessage(),
-            'trace' => $e->getTraceAsString(),
-            'app_debug' => config('app.debug'),
-        ], 500);
-    }
-});
+/*
+|--------------------------------------------------------------------------
+| Rutes API - Última Hora BCN
+|--------------------------------------------------------------------------
+*/
 
 // --- Autenticació ---
 Route::post('/auth/registre', [AuthController::class, 'registre']);

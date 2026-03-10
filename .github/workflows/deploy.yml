@@ -38,8 +38,8 @@ jobs:
             echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> backend/.env
             echo "MAIL_ENCRYPTION=${{ secrets.MAIL_ENCRYPTION }}" >> backend/.env
             echo "MAIL_FROM_ADDRESS=${{ secrets.MAIL_FROM_ADDRESS }}" >> backend/.env
-            echo "APP_DEBUG=true" >> backend/.env
-            echo "LOG_CHANNEL=stderr" >> backend/.env
+            echo "APP_DEBUG=false" >> backend/.env
+            echo "LOG_CHANNEL=single" >> backend/.env
             echo "DB_CONNECTION=mysql" >> backend/.env
             echo "DB_HOST=db" >> backend/.env
             echo "DB_PORT=3306" >> backend/.env
@@ -62,18 +62,11 @@ jobs:
             docker exec last24_backend php artisan config:clear
             docker exec last24_backend php artisan cache:clear
             docker exec last24_backend php artisan view:clear
-            docker exec last24_backend php artisan route:clear
-            echo "--- LLISTAT DE RUTES (API) ---"
-            docker exec last24_backend php artisan route:list --path=api
-            echo "--- VERIFICACIÓ FITXER RUTES ---"
-            docker exec last24_backend cat routes/api.php | grep -C 5 "health-check"
-            # docker exec last24_backend php artisan route:cache
-            # docker exec last24_backend php artisan config:cache
+            docker exec last24_backend php artisan route:cache
+            docker exec last24_backend php artisan config:cache
             echo "--- ESTAT DELS CONTENIDORS ---"
             docker ps
-            echo "--- LOGS DEL BACKEND (ÚLTIMS 30) ---"
-            docker logs last24_backend --tail 30
-            echo "--- LARAVEL LOG (storage/logs/laravel.log) ---"
-            docker exec last24_backend tail -n 50 storage/logs/laravel.log || echo "No laravel.log found yet."
+            echo "--- LOGS DEL BACKEND (ÚLTIMS 10) ---"
+            docker logs last24_backend --tail 10
             echo "--- LOGS DEL FRONTEND ---"
-            docker logs last24_frontend --tail 20
+            docker logs last24_frontend --tail 10
