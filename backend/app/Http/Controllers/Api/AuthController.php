@@ -120,6 +120,7 @@ class AuthController extends Controller
      */
     public function googleRedirect()
     {
+        // Forcem la URL de retorn per evitar que Laravel la generi dinàmicament com a localhost
         return \Laravel\Socialite\Facades\Socialite::driver('google')
             ->stateless()
             ->redirectUrl(config('services.google.redirect'))
