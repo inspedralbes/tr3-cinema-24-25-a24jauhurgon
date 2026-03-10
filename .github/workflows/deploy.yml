@@ -20,9 +20,9 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            sudo mkdir -p /var/www/cinema
-            sudo chown -R $USER:$USER /var/www/cinema
-            cd /var/www/cinema
+            sudo mkdir -p /var/www/last24bcn
+            sudo chown -R $USER:$USER /var/www/last24bcn
+            cd /var/www/last24bcn
             if [ ! -d ".git" ]; then
               git clone https://github.com/inspedralbes/tr3-cinema-24-25-a24jauhurgon.git .
             fi
