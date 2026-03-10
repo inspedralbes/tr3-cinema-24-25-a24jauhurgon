@@ -19,7 +19,8 @@ services:
       dockerfile: Dockerfile
     container_name: last24_backend
     restart: unless-stopped
-    # Ports eliminats per seguretat (només accessible via Nginx)
+    ports:
+      - "8005:8000"
     # Volumes eliminats per producció (fem servir el codi dins la imatge)
     environment:
       DB_CONNECTION: mysql
@@ -28,9 +29,9 @@ services:
       DB_DATABASE: ultimahorabcn_db
       DB_USERNAME: root
       DB_PASSWORD: password
-      FRONTEND_URL: https://last24bcn.daw.inspedralbes.cat:8445
-      CORS_ALLOWED_ORIGINS: https://last24bcn.daw.inspedralbes.cat:8445,http://last24bcn.daw.inspedralbes.cat:8005
-      GOOGLE_REDIRECT_URI: https://last24bcn.daw.inspedralbes.cat:8445/api/auth/google/callback
+      FRONTEND_URL: https://last24bcn.daw.inspedralbes.cat
+      CORS_ALLOWED_ORIGINS: https://last24bcn.daw.inspedralbes.cat
+      GOOGLE_REDIRECT_URI: https://last24bcn.daw.inspedralbes.cat/api/auth/google/callback
     depends_on:
       - db
 
@@ -40,7 +41,8 @@ services:
       dockerfile: Dockerfile
     container_name: last24_socket
     restart: unless-stopped
-    # Ports eliminats per seguretat (només accessible via Nginx)
+    ports:
+      - "3005:3001"
     # Volumes eliminats per producció
 
   frontend:
@@ -49,29 +51,14 @@ services:
       dockerfile: Dockerfile
     container_name: last24_frontend
     restart: unless-stopped
-    # Ports eliminats per seguretat (només accessible via Nginx)
+    ports:
+      - "5005:5173"
     # Volumes eliminats per producció
     environment:
       - CHOKIDAR_USEPOLLING=true
       - VITE_API_BASE_URL=/api
       - VITE_SOCKET_URL=/
     depends_on:
-      - backend
-      - socket
-
-  nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    container_name: last24_nginx
-    restart: unless-stopped
-    environment:
-      - NGINX_HOST=last24bcn.daw.inspedralbes.cat
-    ports:
-      - "8005:80"
-      - "8445:443"
-    depends_on:
-      - frontend
       - backend
       - socket
 
