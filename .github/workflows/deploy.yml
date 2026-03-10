@@ -78,6 +78,8 @@ jobs:
             docker exec last24_backend php artisan cache:clear
             docker exec last24_backend php artisan view:clear
             docker exec last24_backend php artisan route:cache
+            docker exec last24_backend php artisan config:clear
+            docker exec last24_backend php artisan cache:clear
             docker exec last24_backend php artisan config:cache
             echo "--- VERIFICACIÓ CONFIGURACIÓ (FRONTEND) ---"
             docker exec last24_backend php artisan config:show app | grep frontend_url || echo "frontend_url not found"

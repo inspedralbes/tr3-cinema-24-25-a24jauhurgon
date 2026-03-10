@@ -120,10 +120,10 @@ class AuthController extends Controller
      */
     public function googleRedirect()
     {
-        // Forcem la URL de retorn per evitar que Laravel la generi dinàmicament com a localhost
+        // Forçat màxim: Hardcodejem la URL final per evitar qualsevol detecció de localhost:8000
         return \Laravel\Socialite\Facades\Socialite::driver('google')
             ->stateless()
-            ->redirectUrl(config('services.google.redirect'))
+            ->redirectUrl('https://last24bcn.daw.inspedralbes.cat/api/auth/google/callback')
             ->redirect();
     }
 
