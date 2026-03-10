@@ -40,8 +40,10 @@ jobs:
             echo "MAIL_FROM_ADDRESS=${{ secrets.MAIL_FROM_ADDRESS }}" >> backend/.env
             echo "APP_ENV=production" >> backend/.env
             echo "APP_DEBUG=false" >> backend/.env
-            echo "LOG_CHANNEL=single" >> backend/.env
+            echo "LOG_CHANNEL=stderr" >> backend/.env
             echo "SESSION_SECURE_COOKIE=true" >> backend/.env
+            echo "SESSION_DOMAIN=last24bcn.daw.inspedralbes.cat" >> backend/.env
+            echo "SANCTUM_STATEFUL_DOMAINS=last24bcn.daw.inspedralbes.cat" >> backend/.env
             echo "DB_CONNECTION=mysql" >> backend/.env
             echo "DB_HOST=db" >> backend/.env
             echo "DB_PORT=3306" >> backend/.env
