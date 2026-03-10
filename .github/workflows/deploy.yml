@@ -62,8 +62,12 @@ jobs:
             # Esborrar caché local abans de pujar contenidors (vital si es copia el directori)
             rm -f backend/bootstrap/cache/*.php
 
+            # Neteja de builder per no arrossegar capes de build corruptes de localhost
+            docker builder prune -f
+            
             docker compose -f docker-compose.prod.yml down --remove-orphans
-            docker compose -f docker-compose.prod.yml up -d --build
+            docker compose -f docker-compose.prod.yml build --no-cache
+            docker compose -f docker-compose.prod.yml up -d
             
             echo "--- ESPERANT QUE EL BACKEND I DB ESTIGUIN LLESTOS ---"
             sleep 15
