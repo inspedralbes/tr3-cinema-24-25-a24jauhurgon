@@ -51,9 +51,9 @@ services:
       dockerfile: Dockerfile
     container_name: last24_frontend
     restart: unless-stopped
-    volumes:
-      - /var/www/last24bcn/dist:/app/dist
-    # Volumes eliminats per producció
+    ports:
+      - "5005:8080"
+    # Volums eliminats per producció (fem servir el build intern)
     environment:
       - CHOKIDAR_USEPOLLING=true
       - VITE_API_BASE_URL=/api

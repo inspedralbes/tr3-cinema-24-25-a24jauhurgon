@@ -14,8 +14,8 @@ COPY . .
 # Build frontend
 RUN npm run build
 
-# Copy build to a temporary location inside the image
-RUN cp -r dist dist_backup
+# Install a simple server to serve the build
+RUN npm install -g http-server
 
-# At runtime, copy files to the shared volume and keep alive
-CMD ["sh", "-c", "cp -r /app/dist_backup/. /app/dist/ && echo 'Files synced to /var/www' && tail -f /dev/null"]
+# Serve the dist folder on port 8080
+CMD ["http-server", "dist", "-p", "8080", "--proxy", "http://localhost:8080?"]
