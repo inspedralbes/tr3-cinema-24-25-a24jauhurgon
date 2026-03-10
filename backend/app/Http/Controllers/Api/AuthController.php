@@ -169,11 +169,11 @@ class AuthController extends Controller
             }
 
             // Redirigim al frontend amb el token a la URL
-            $frontendUrl = env('FRONTEND_URL', 'http://localhost:5173');
+            $frontendUrl = config('app.frontend_url');
             return redirect($frontendUrl . '/vols?token=' . $token . '&usuari=' . urlencode(json_encode($usuari)));
             
         } catch (\Exception $e) {
-            $frontendUrl = env('FRONTEND_URL', 'http://localhost:5173');
+            $frontendUrl = config('app.frontend_url');
             return redirect($frontendUrl . '/?error=' . urlencode('Error amb Google: ' . $e->getMessage()));
         }
     }
