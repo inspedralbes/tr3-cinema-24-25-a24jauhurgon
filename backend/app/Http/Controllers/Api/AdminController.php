@@ -377,11 +377,11 @@ class AdminController extends Controller
                 'estat_venda' => $vol->estat_venda,
                 'vol_entrant_origen' => $vol->vol_entrant_origen,
                 'hora_arribada_esperada' => $vol->hora_arribada_esperada,
-                'cuaEsperant' => $vol->cua_esperant_count ?? 0,
-                'cuaAutoritzats' => $vol->cua_autoritzats_count ?? 0,
-                'holdsActius' => $vol->holds_actius_count ?? 0,
-                'seientsComprats' => $vol->seients_comprats_count ?? 0,
-                'seientsEmbarcats' => $vol->seients_embarcats_count ?? 0,
+                'cuaEsperant' => $vol->cuaEsperant ?? $vol->cua_esperant_count ?? 0,
+                'cuaAutoritzats' => $vol->cuaAutoritzats ?? $vol->cua_autoritzats_count ?? 0,
+                'holdsActius' => $vol->holdsActius ?? $vol->holds_actius_count ?? 0,
+                'seientsComprats' => $vol->seientsComprats ?? $vol->seients_comprats_count ?? 0,
+                'seientsEmbarcats' => $vol->seientsEmbarcats ?? $vol->seients_embarcats_count ?? 0,
                 'capacitatActius' => $vol->controlCompra ? $vol->controlCompra->actius : 0,
             ];
         });
