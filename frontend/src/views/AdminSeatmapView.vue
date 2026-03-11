@@ -90,7 +90,7 @@ export default {
 <template>
   <div class="space-y-6 animate-fade-in-up">
     <!-- Header -->
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
       <div class="flex items-center gap-4">
         <button @click="$router.push('/admin')"
           class="w-10 h-10 rounded-full bg-slate-800/50 hover:bg-slate-700 flex items-center justify-center text-slate-300 transition-colors">
@@ -104,8 +104,8 @@ export default {
       </div>
 
       <!-- Botons Control Venda Ràpid -->
-      <div v-if="vol" class="flex items-center gap-3">
-        <div class="px-3 py-1.5 rounded-lg border flex items-center gap-2 text-sm font-bold"
+      <div v-if="vol" class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+        <div class="px-3 py-1.5 rounded-lg border flex items-center gap-2 text-sm font-bold w-max"
           :class="vol.estat_venda === 'obert' ? 'bg-green-500/10 border-green-500/30 text-green-400' : (vol.estat_venda === 'tancat' ? 'bg-slate-800 text-slate-400 border-slate-700' : 'bg-primary/20 border-primary/40 text-primary')">
           <span class="w-2 h-2 rounded-full"
             :class="vol.estat_venda === 'obert' ? 'bg-green-500 animate-pulse' : (vol.estat_venda === 'tancat' ? 'bg-slate-500' : 'bg-primary')"></span>
@@ -178,7 +178,7 @@ export default {
                     <div v-if="estatSeient(fila, col).tipus !== 'lliure'"
                       class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-lg text-xs font-bold text-white shadow-xl opacity-0 group-hover/seat:opacity-100 transition-opacity pointer-events-none z-20 flex flex-col items-center">
                       <span class="text-[10px] text-slate-400 uppercase tracking-widest">{{ estatSeient(fila, col).tipus
-                        }}</span>
+                      }}</span>
                       <span>{{ estatSeient(fila, col).usuari }}</span>
                       <div
                         class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-700">
