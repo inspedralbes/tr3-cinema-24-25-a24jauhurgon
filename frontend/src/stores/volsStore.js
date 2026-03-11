@@ -79,9 +79,9 @@ export var useVolsStore = defineStore('vols', {
             })
         },
 
-        carregarHistorial: function () {
+        carregarHistorial: function (silenci = false) {
             var self = this
-            self.carregant = true
+            if (!silenci) self.carregant = true
             self.error = null
 
             return api.get('/vols/historial').then(function (response) {

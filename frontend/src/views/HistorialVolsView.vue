@@ -2,6 +2,7 @@
 // Vista Historial de Vols — Vols passats amb mapa de seients i privacitat (Fase 4)
 import { useVolsStore } from '../stores/volsStore.js'
 import AppHeader from '../components/AppHeader.vue'
+import socketService from '../services/socketService.js'
 
 export default {
   name: 'HistorialVolsView',
@@ -50,6 +51,14 @@ export default {
   },
   mounted: function () {
     this.volsStore.carregarHistorial()
+
+    // Si l'admin finalitza un vol manualment, la llista s'actualitza sola
+    socketService.onVolEstatActualitzat(() => {
+      this.volsStore.carregarHistorial(true) // Silent reload
+    })
+  },
+  beforeUnmount: function () {
+    socketService.netejarListeners();
   }
 }
 </script>
@@ -63,7 +72,8 @@ export default {
       <!-- Títol -->
       <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
-          <h1 class="text-3xl md:text-5xl font-extrabold tracking-tighter mb-3 bg-gradient-to-r from-white to-slate-500 bg-clip-text text-transparent">
+          <h1
+            class="text-3xl md:text-5xl font-extrabold tracking-tighter mb-3 bg-gradient-to-r from-white to-slate-500 bg-clip-text text-transparent">
             Historial de Vols
           </h1>
           <p class="text-slate-400 text-lg">Consulta el trànsit passat i l'ocupació final dels avions.</p>
@@ -85,7 +95,8 @@ export default {
 
       <!-- Sense vols -->
       <div v-else-if="vols.length === 0" class="text-center py-32 glass-panel rounded-3xl">
-        <div class="w-20 h-20 bg-slate-800/50 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/5">
+        <div
+          class="w-20 h-20 bg-slate-800/50 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/5">
           <span class="material-icons text-slate-500 text-4xl">folder_off</span>
         </div>
         <p class="text-slate-400 text-xl font-medium">L'historial està buit.</p>
@@ -95,17 +106,18 @@ export default {
       <!-- Llistat de vols -->
       <div v-else class="grid grid-cols-1 gap-6">
         <div v-for="vol in vols" :key="vol.id"
-             class="glass-panel rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5"
-             :class="volExpandit === vol.id ? 'border-primary/30 ring-1 ring-primary/20 scale-[1.01]' : 'border-white/5'">
+          class="glass-panel rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5"
+          :class="volExpandit === vol.id ? 'border-primary/30 ring-1 ring-primary/20 scale-[1.01]' : 'border-white/5'">
 
           <!-- Card header -->
           <div class="p-6 cursor-pointer hover:bg-white/[0.02] transition-colors relative group"
-               @click="toggleVol(vol.id)">
-            
+            @click="toggleVol(vol.id)">
+
             <div class="flex flex-col md:flex-row md:items-center gap-6">
               <!-- Indicador Estat/Ruta -->
               <div class="flex items-center gap-4 flex-grow">
-                <div class="w-14 h-14 bg-slate-800 rounded-2xl flex items-center justify-center border border-white/10 group-hover:border-primary/30 transition-colors">
+                <div
+                  class="w-14 h-14 bg-slate-800 rounded-2xl flex items-center justify-center border border-white/10 group-hover:border-primary/30 transition-colors">
                   <span class="material-icons text-slate-400 text-3xl">flight_land</span>
                 </div>
                 <div>
@@ -113,7 +125,9 @@ export default {
                     <span class="text-2xl font-black tracking-tight">{{ vol.origenIata }}</span>
                     <span class="material-icons text-primary text-sm">east</span>
                     <span class="text-2xl font-black tracking-tight">{{ vol.destiIata }}</span>
-                    <span class="px-2 py-0.5 bg-slate-800 text-slate-400 rounded text-[10px] font-mono border border-white/10 uppercase">{{ vol.externalId }}</span>
+                    <span
+                      class="px-2 py-0.5 bg-slate-800 text-slate-400 rounded text-[10px] font-mono border border-white/10 uppercase">{{
+                      vol.externalId }}</span>
                   </div>
                   <div class="flex items-center gap-4 text-sm text-slate-500">
                     <span class="flex items-center gap-1.5 font-medium">
@@ -138,20 +152,23 @@ export default {
                   <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Ocupació</div>
                   <div class="flex items-center gap-3">
                     <div class="w-24 h-2.5 bg-slate-800 rounded-full overflow-hidden border border-white/5 p-0.5">
-                      <div class="h-full rounded-full bg-gradient-to-r from-primary to-blue-400 shadow-[0_0_10px_rgba(19,127,236,0.3)] transition-all duration-1000"
-                           :style="'width: ' + ((vol.bitlletsComprats / vol.modelAvio.seientsTotals) * 100) + '%'"></div>
+                      <div
+                        class="h-full rounded-full bg-gradient-to-r from-primary to-blue-400 shadow-[0_0_10px_rgba(19,127,236,0.3)] transition-all duration-1000"
+                        :style="'width: ' + ((vol.bitlletsComprats / vol.modelAvio.seientsTotals) * 100) + '%'"></div>
                     </div>
-                    <span class="text-sm font-black text-white">{{ Math.round((vol.bitlletsComprats / vol.modelAvio.seientsTotals) * 100) }}%</span>
+                    <span class="text-sm font-black text-white">{{ Math.round((vol.bitlletsComprats /
+                      vol.modelAvio.seientsTotals) * 100) }}%</span>
                   </div>
                 </div>
               </div>
 
               <div class="flex items-center justify-between md:justify-end gap-4 mt-4 md:mt-0">
-                 <!-- Botó expandir -->
-                 <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-primary group-hover:text-white transition-all">
-                   <span class="material-icons transition-transform duration-300"
-                         :class="volExpandit === vol.id ? 'rotate-180' : ''">expand_more</span>
-                 </div>
+                <!-- Botó expandir -->
+                <div
+                  class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-primary group-hover:text-white transition-all">
+                  <span class="material-icons transition-transform duration-300"
+                    :class="volExpandit === vol.id ? 'rotate-180' : ''">expand_more</span>
+                </div>
               </div>
             </div>
           </div>
@@ -185,8 +202,8 @@ export default {
                 <div class="mx-auto min-w-fit flex flex-col items-center">
                   <!-- Capçalera Lletres (A, B, C...) -->
                   <div class="flex gap-1.5 mb-4 ml-10">
-                    <div v-for="c in vol.modelAvio.columnes" :key="c" 
-                         class="w-6 md:w-8 text-center text-[10px] font-black text-slate-600 uppercase">
+                    <div v-for="c in vol.modelAvio.columnes" :key="c"
+                      class="w-6 md:w-8 text-center text-[10px] font-black text-slate-600 uppercase">
                       {{ String.fromCharCode(64 + c) }}
                     </div>
                   </div>
@@ -195,15 +212,16 @@ export default {
                   <div v-for="f in vol.modelAvio.files" :key="f" class="flex items-center gap-1.5 mb-1.5">
                     <!-- Número de fila -->
                     <div class="w-8 text-right pr-2 text-[10px] font-black text-slate-700">{{ f }}</div>
-                    
+
                     <!-- Seients de la fila -->
-                    <div v-for="c in vol.modelAvio.columnes" :key="c"                             
-                         class="w-6 h-6 md:w-8 md:h-8 rounded flex items-center justify-center transition-all duration-500"
-                         :class="[
-                            esOcupat(vol, f, c) ? 'bg-primary border border-primary/30 shadow-[0_0_8px_rgba(19,127,236,0.3)]' : 'bg-slate-800/40 border border-white/5',
-                            c === vol.modelAvio.columnes / 2 ? 'mr-3 md:mr-6' : ''
-                         ]">
-                      <span v-if="esOcupat(vol, f, c)" class="material-icons text-white text-[10px] md:text-sm">check</span>
+                    <div v-for="c in vol.modelAvio.columnes" :key="c"
+                      class="w-6 h-6 md:w-8 md:h-8 rounded flex items-center justify-center transition-all duration-500"
+                      :class="[
+                        esOcupat(vol, f, c) ? 'bg-primary border border-primary/30 shadow-[0_0_8px_rgba(19,127,236,0.3)]' : 'bg-slate-800/40 border border-white/5',
+                        c === vol.modelAvio.columnes / 2 ? 'mr-3 md:mr-6' : ''
+                      ]">
+                      <span v-if="esOcupat(vol, f, c)"
+                        class="material-icons text-white text-[10px] md:text-sm">check</span>
                     </div>
                   </div>
                 </div>
@@ -214,15 +232,18 @@ export default {
                 <div class="bg-white/5 p-4 rounded-2xl border border-white/5">
                   <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Configuració</div>
                   <div class="text-lg font-bold">{{ vol.modelAvio.nom }}</div>
-                  <div class="text-xs text-slate-400">{{ vol.modelAvio.files }} files x {{ vol.modelAvio.columnes }} col.</div>
+                  <div class="text-xs text-slate-400">{{ vol.modelAvio.files }} files x {{ vol.modelAvio.columnes }}
+                    col.</div>
                 </div>
                 <div class="bg-white/5 p-4 rounded-2xl border border-white/5">
                   <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Capacitat</div>
                   <div class="text-lg font-bold">{{ vol.modelAvio.seientsTotals }} seients totals</div>
-                  <div class="text-xs text-slate-400">{{ vol.modelAvio.seientsTotals - vol.bitlletsComprats }} seients lliures</div>
+                  <div class="text-xs text-slate-400">{{ vol.modelAvio.seientsTotals - vol.bitlletsComprats }} seients
+                    lliures</div>
                 </div>
                 <div class="bg-primary/5 p-4 rounded-2xl border border-primary/10">
-                  <div class="text-[10px] font-bold text-primary/70 uppercase tracking-widest mb-1">Bitllets Venuts</div>
+                  <div class="text-[10px] font-bold text-primary/70 uppercase tracking-widest mb-1">Bitllets Venuts
+                  </div>
                   <div class="text-2xl font-black text-primary">{{ vol.bitlletsComprats }}</div>
                   <div class="text-xs text-slate-400">Arxivat permanentment.</div>
                 </div>
@@ -235,7 +256,8 @@ export default {
 
     <!-- Footer Simple -->
     <footer class="p-8 text-center text-slate-600 text-xs mt-10">
-      &copy; 2026 last24bcn - Sistema de Gestió de Vendes en Temps Real. Les dades del passatgers no són públiques per motius de privacitat RGPD.
+      &copy; 2026 last24bcn - Sistema de Gestió de Vendes en Temps Real. Les dades del passatgers no són públiques per
+      motius de privacitat RGPD.
     </footer>
   </div>
 </template>
@@ -252,7 +274,14 @@ export default {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>

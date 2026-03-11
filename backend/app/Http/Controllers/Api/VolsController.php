@@ -36,6 +36,7 @@ class VolsController extends Controller
         $query = VolIntern::where('origenIata', 'BCN')
             ->where('dataHoraSortida', '>=', now()) // Canviat de $minim a now()
             ->where('dataHoraSortida', '<=', $limit)
+            ->where('estat_venda', '!=', 'finalitzat') // Amagar els finalitzats manualment de la llista activa
             ->with(['modelAvio', 'controlCompra']);
 
         if ($desti) {
@@ -103,11 +104,19 @@ class VolsController extends Controller
      */
     public function historial(Request $request)
     {
-        // Netejar abans de mostrar
+        // Netejar abans de mostrar (esborra els antics del tot de la DB si no tenen vendes)
         $this->netejarVolsPassats();
 
+        // L'historial mostra els vols que:
+        // 1. O bé ja han sortit (dataHoraSortida < ara)
+        // 2. O bé estan marcats manualment com a 'finalitzat'
+        // I A MÉS, només mostra els vols d'AVUI (quan s'acabi el dia, la pantalla quedarà neta)
         $vols = VolIntern::where('origenIata', 'BCN')
-            ->where('dataHoraSortida', '<', now())
+            ->whereDate('dataHoraSortida', now()->toDateString()) // Només els d'avui
+            ->where(function ($query) {
+                $query->where('dataHoraSortida', '<', now())
+                      ->orWhere('estat_venda', 'finalitzat');
+            })
             ->with(['modelAvio', 'bitllets'])
             ->orderBy('dataHoraSortida', 'desc')
             ->get();
