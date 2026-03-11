@@ -56,6 +56,8 @@ jobs:
             sed -i '/^FRONTEND_URL=/d' backend/.env && echo "FRONTEND_URL=https://last24bcn.daw.inspedralbes.cat" >> backend/.env
             sed -i '/^GOOGLE_REDIRECT_URI=/d' backend/.env && echo "GOOGLE_REDIRECT_URI=https://last24bcn.daw.inspedralbes.cat/api/auth/google/callback" >> backend/.env
             sed -i '/^SESSION_SECURE_COOKIE=/d' backend/.env && echo "SESSION_SECURE_COOKIE=true" >> backend/.env
+            sed -i '/^MAIL_FROM_ADDRESS=/d' backend/.env && echo "MAIL_FROM_ADDRESS=noreply@last24bcn.daw.inspedralbes.cat" >> backend/.env
+            sed -i '/^MAIL_FROM_NAME=/d' backend/.env && echo "MAIL_FROM_NAME=\"Last24 BCN\"" >> backend/.env
             
             echo "--- VERIFICACIÓ .ENV ---"
             grep -E "APP_URL|REDIRECT_URI" backend/.env
