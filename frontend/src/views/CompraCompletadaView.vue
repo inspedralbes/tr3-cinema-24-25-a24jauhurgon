@@ -12,7 +12,8 @@ export default {
       this.$router.push('/vols')
     },
     descarregarPdf: function () {
-      window.open('http://localhost:8000/api/compra/' + this.compraId + '/pdf', '_blank')
+      var baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'
+      window.open(baseUrl + '/compra/' + this.compraId + '/pdf', '_blank')
     }
   },
   mounted: function () {

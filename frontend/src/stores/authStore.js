@@ -147,8 +147,9 @@ export var useAuthStore = defineStore('auth', {
 
         // Redirigir a Google per login
         loginGoogle: function () {
-            // Simplement redirigim a l'endpoint de Laravel que fa el redirect a Google
-            window.location.href = 'http://localhost:8000/api/auth/google/redirect'
+            // Fem servir la URL base de l'API definida als arxius .env
+            var baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'
+            window.location.href = baseUrl + '/auth/google/redirect'
         },
 
         // Guardar sessió des de paràmetres de URL (Callback Social)
