@@ -60,6 +60,11 @@ export default {
       socketService.onSeatmapActualitzat(() => {
         this.carregarDades(true)
       })
+
+      // Escoltar enviaments d'embarcament (escaneig de QR) per repintar el seient a "Embarcat" al moment
+      socketService.onBarretaEmbarcamentActualitzada(() => {
+        this.carregarDades(true)
+      })
     },
     forcarEstatVenda(estat) {
       if (!confirm(`Segur que vols canviar l'estat a ${estat}?`)) return
