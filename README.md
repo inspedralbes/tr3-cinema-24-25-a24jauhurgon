@@ -10,14 +10,15 @@ Last24BCN és una plataforma web innovadora diseñada per a la venda de vols "La
 - 🎟️ **Waiting Room Virtual**: Gestió concurrent de l'accés a la compra per evitar saturació del sistema.
 - 💺 **Live Seatmap**: Selecció de seients interactiva amb actualització instantània a tots els usuaris via WebSockets.
 - 🔒 **Clients Premium & Socis**: Accés exclusiu a First Class i descomptes aplicats automàticament.
-- 🎫 **Bitllet Digital Seguro**: Generació instantània de PDF amb codi QR xifrat enviat per correu electrònic.
-- 🛂 **Torre de Control (Admin)**: Panell de monitorització en viu de vols, passatgers i escàner de check-in per QR.
+- 🎫 **Bitllet Digital Seguro**: Generació instantània de PDF amb codi QR xifrat enviat via **Resend**.
+- 🛂 **Torre de Control (Admin)**: Panell de monitorització en temps real, overrides d'estat i check-in per escàner QR.
+- 🧹 **Smart History & GC**: Neteja automàtica (Garbage Collection) de vols passats sense vendes per mantenir la DB optimitzada.
 
 ## 🛠️ Tecnologies Principals
 - **Frontend**: Vue 3, Pinia, Vite, TailwindCSS.
-- **Backend**: Laravel 11, Sanctum, Socialite (Google Login).
+- **Backend**: Laravel 11, Sanctum, Socialite (Google Login), Resend PHP.
 - **Temps Real**: Node.js + Socket.IO.
-- **Infraestructura**: Docker & Nginx (SSL/HTTPS).
+- **Infraestructura**: Docker & Nginx Reverse Proxy (SSL/HTTPS).
 
 ## 📚 Documentació Detallada
 Per a més informació, consulta els nostres guies específiques:

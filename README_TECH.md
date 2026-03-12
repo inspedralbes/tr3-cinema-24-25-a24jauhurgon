@@ -28,14 +28,22 @@ L'aplicació es basa en una arquitectura de microserveis orquestrats per Docker:
 ## 🔄 Lògica de Temps Real (WebSockets)
 
 El sistema utilitza un flux de comunicació triangular:
-1. El **Backend (PHP)** realitza l'acció i notifica al servidor de **Sockets (Node)** via una API interna oculta (Port 3002).
-2. El servidor de **Sockets** difon (`emit`) l'esdeveniment a tots els **Clients** connectats.
-3. El **Frontend** reacciona i redibuixa la UI sense necessitat de recarregar.
+1. El **Backend (PHP)** realitza l'acció i notifica al servidor de **Sockets (Node)** via una API request interna automàtica (`SOCKET_SERVER_URL=http://socket:3001`).
+2. El servidor de **Sockets** difon (`emit`) l'esdeveniment pertinent.
+3. El **Frontend** reacciona de forma Optimista i redibuixa la UI sense necessitat de recarregar.
+
+**Esdeveniments Clau:**
+- `seatmap-actualitzat` / `cua-canvi` (Client)
+- `monitoritzacio_actualitzada` (Admin Dashboard Global)
+- `barreta_embarcament_actualitzada` (Admin Scanner QR)
 
 ## 🧾 Eines de Gestió
 - **Generació de Bitllets**: DomPDF per crear el document oficial.
 - **Check-in QR**: Integració de `vue-qrcode-reader` per a l'escaneig de bitllets en la Torre de Control (Panell Admin).
 - **Mailing**: Enviament assíncron de bitllets un cop finalitzada la compra.
 
-##  Privacidade e RGPD
-Les dades de vols passats s'ofusquen automàticament en l'historial del client per protegir la privacitat, mantenint només els mapes de seients amb dades genèriques (sense noms).
+##  Privacitat i Historial Intel·ligent (Garbage Collection)
+L'aplicació compta amb una rutina passiva en l'endpoint de llistats:
+1. **Garbage Collection**: Tot vol la data de sortida del qual ja ha passat **sense cap bitllet venut** és completament esborrat de la Base de Dades per prevenir l'acumulació de brossa del Simulador.
+2. **Historial Segur**: Els vols vençuts _amb_ vendes es passen a l'Historial Diari (`/api/vols/historial`).
+3. **Ofuscació**: L'API d'Historial censura qualsevol dada privada (PII) d'usuaris. Les dades retornades al Frontend es limiten al mapa de seients en format `{fila, columna}`, eliminant la traçabilitat dels passatgers per als visitants generals.

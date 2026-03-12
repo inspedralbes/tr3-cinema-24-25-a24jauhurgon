@@ -41,6 +41,7 @@ Cal configurar els següents secrets a GitHub (`Settings > Secrets > Actions`):
 - `SERVER_HOST`: `91.99.222.189`
 - `SERVER_USER`: `root`
 - `SERVER_PASSWORD`: Les teves credencials de SSH.
+- `RESEND_API_KEY`: Clau d'API de Resend per a l'enviament oficial de correus.
 - `APP_KEY`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, etc. (veure `.env.prod.example`).
 
 Cada vegada que es faci un `push` o un `merge` a **`main`**, el sistema:
