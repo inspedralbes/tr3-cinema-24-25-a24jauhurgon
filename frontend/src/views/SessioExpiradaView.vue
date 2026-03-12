@@ -72,7 +72,7 @@ export default {
           class="w-full bg-primary py-4 rounded-xl font-bold text-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
           @click="tornarTentar">
           <span class="material-icons">replay</span>
-          Tornar-ho a intentar
+          Tornar a la compra
         </button>
         <button v-else
           class="w-full bg-primary py-4 rounded-xl font-bold text-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
