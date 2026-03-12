@@ -11,13 +11,13 @@ Per defecte, l'aplicació està configurada per utilitzar ports acabats en **5**
 
 | Servei | Port Públic (Host) | Port Intern (Docker) | Port Proxy (Local) |
 |--------|-------------------|----------------------|--------------------|
-| **Web (HTTPS)** | `443` | - | `5005` |
-| **API (Laravel)** | - | `8000` | `8005` |
-| **Realtime** | - | `3001` | `3005` |
+| **Web (HTTPS)** | `443` | - | `5055` |
+| **API (Laravel)** | - | `8000` | `8055` |
+| **Realtime** | - | `3001` | `3055` |
 | **Base de Dades** | `33065` | `3306` | - |
 
 > [!NOTE]
-> En aquest nou model de producció, un Nginx extern del host gestiona l'SSL i redirigeix el tràfic als ports `5005`, `8005` i `3005`.
+> En aquest nou model de producció, un Nginx extern del host gestiona l'SSL i redirigeix el tràfic als ports `5055`, `8055` i `3055`.
 
 ## 🚀 Desplegament amb Docker Compose
 

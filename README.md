@@ -26,7 +26,11 @@ Per a més informació, consulta els nostres guies específiques:
 - ⚙️ [**Detalls Tècnics i API**](README_TECH.md): Arquitectura, endpoints i flux de dades en temps real.
 
 ## 👤 Autor
-Desenvolupat per **Héctor Jau Hurgon** (@a24jauhurgon) com a projecte TR3 Cinema 24-25.
+Desenvolupat per **Jaume Hurtado González** com a projecte TR3 Cinema 24-25.
 
 ---
-🔗 **Accés a l'App**: [last24bcn.daw.inspedralbes.cat:8445](https://last24bcn.daw.inspedralbes.cat:8445)
+🔗 **Accés a l'App**: [last24bcn.daw.inspedralbes.cat:8445](https://last24bcn.daw.inspedralbes.cat)
+    - Admin: [admin@ultimahorabcn.cat] / password
+    - Usuari Premium: [premium@example.com] / password
+    - Usuari General: [general@example.com] / password
+    - Usuari Propi: amb autenticació de Google o com a convidat
