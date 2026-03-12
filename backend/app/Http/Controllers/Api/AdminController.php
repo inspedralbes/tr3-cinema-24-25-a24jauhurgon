@@ -144,7 +144,7 @@ class AdminController extends Controller
             'estat' => 'programat',
             'modelAvioId' => $request->modelAvioId,
             'externalId' => $request->externalId,
-            'capacitatCompra' => 10,
+            'capacitatCompra' => 2,
             'maximBitlletsPerCompra' => $request->input('maximBitlletsPerCompra', 4),
         ]);
 
@@ -152,7 +152,7 @@ class AdminController extends Controller
         ControlCompraVol::create([
             'volId' => $vol->id,
             'actius' => 0,
-            'capacitat' => 10,
+            'capacitat' => 2,
         ]);
 
         return response()->json(['vol' => $vol->load('modelAvio')], 201);
