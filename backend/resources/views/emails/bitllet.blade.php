@@ -6,18 +6,18 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            color: #e2e8f0;
-            background-color: #0f172a;
+            color: #333333;
+            background-color: #f8fafc;
             margin: 0;
             padding: 0;
         }
         .container {
             max-width: 600px;
             margin: 20px auto;
-            background-color: #1e293b;
+            background-color: #ffffff;
             border-radius: 12px;
             overflow: hidden;
-            border: 1px solid rgba(19, 127, 236, 0.2);
+            border: 1px solid #e2e8f0;
         }
         .header {
             background: linear-gradient(135deg, #137fec 0%, #0b5db3 100%);
@@ -34,16 +34,16 @@
             padding: 40px;
         }
         .info-box {
-            background-color: rgba(255, 255, 255, 0.03);
+            background-color: #f1f5f9;
             border-radius: 8px;
             padding: 20px;
             margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid #e2e8f0;
         }
         .flight-route {
             font-size: 24px;
             font-weight: bold;
-            color: #ffffff;
+            color: #0f172a;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -55,17 +55,7 @@
             padding: 20px;
             font-size: 12px;
             color: #64748b;
-            background-color: #0f172a;
-        }
-        .button {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: #137fec;
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-            margin-top: 20px;
+            background-color: #f8fafc;
         }
     </style>
 </head>
@@ -73,10 +63,10 @@
     <div class="container">
         <div class="header">
             <h1>LAST24<span style="font-weight: normal; opacity: 0.8;">BCN</span></h1>
-            <p style="color: rgba(255,255,255,0.7); margin-top: 5px;">Confirmació de Reserva</p>
+            <p style="color: rgba(255,255,255,0.9); margin-top: 5px;">Confirmació de Reserva</p>
         </div>
         <div class="content">
-            <h2 style="color: #ffffff; margin-top: 0;">Hola!</h2>
+            <h2 style="color: #0f172a; margin-top: 0;">Hola!</h2>
             <p>Gràcies per confiar en <strong>last24bcn</strong> per al teu viatge d'última hora. La teva reserva s'ha completat correctament.</p>
             
             <div class="info-box">
@@ -90,7 +80,7 @@
                         {{ $compra->volIntern->destiIata }}
                     </div>
                     
-                    <p style="margin: 5px 0; color: #94a3b8;">
+                    <p style="margin: 5px 0; color: #475569;">
                         Sortida: {{ \Carbon\Carbon::parse($compra->volIntern->dataHoraSortida)->format('d/m/Y H:i') }}
                     </p>
                 </div>
@@ -98,11 +88,11 @@
 
             <p>T'hem adjuntat els bitllets en format <strong>PDF</strong> a aquest correu electrònic. Hauràs de presentar-los a l'aeroport (ja sigui impresos o al mòbil).</p>
             
-            <p style="font-size: 14px; color: #94a3b8;">Detall de la compra: {{ number_format($compra->total, 2, ',', '.') }} €</p>
+            <p style="font-size: 14px; color: #475569;">Detall de la compra: {{ number_format($compra->total, 2, ',', '.') }} €</p>
             
             <div style="text-align: center; margin-top: 40px;">
                 <p style="margin-bottom: 10px;">Bon viatge!</p>
-                <div style="font-weight: bold; color: #ffffff;">L'equip de last24bcn</div>
+                <div style="font-weight: bold; color: #0f172a;">L'equip de last24bcn</div>
             </div>
         </div>
         <div class="footer">
