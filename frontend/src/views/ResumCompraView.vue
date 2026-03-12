@@ -119,7 +119,8 @@ export default {
     sessioExpirada: function () {
       var self = this
       self.cuaStore.sortirCua(self.volId, self.authStore.obtenirClientId).catch(function () {}).finally(function () {
-        self.$router.push('/sessio-expirada')
+        // Redirigir amb el volId per a poder "Tornar-ho a intentar"
+        self.$router.push({ path: '/sessio-expirada', query: { volId: self.volId } })
       })
     },
     inicialitzarPassatgers: function () {

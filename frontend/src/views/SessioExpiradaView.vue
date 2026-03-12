@@ -2,7 +2,19 @@
 // Vista Sessió Expirada — Error de sessió (A10)
 export default {
   name: 'SessioExpiradaView',
+  computed: {
+    volId() {
+      return this.$route.query.volId || null;
+    }
+  },
   methods: {
+    tornarTentar() {
+      if (this.volId) {
+        this.$router.push('/vol/' + this.volId + '/seatmap');
+      } else {
+        this.tornarVols();
+      }
+    },
     tornarVols() {
       this.$router.push('/vols')
     },
@@ -41,7 +53,7 @@ export default {
         <ul class="space-y-3">
           <li class="flex items-start gap-3 text-sm text-slate-400">
             <span class="material-icons text-red-400 text-lg mt-0.5">schedule</span>
-            El ticket de compra tenia una durada de 2 minuts i ha expirat.
+            El ticket de compra tenia una durada màxima i ha expirat.
           </li>
           <li class="flex items-start gap-3 text-sm text-slate-400">
             <span class="material-icons text-amber-500 text-lg mt-0.5">event_seat</span>
@@ -49,14 +61,20 @@ export default {
           </li>
           <li class="flex items-start gap-3 text-sm text-slate-400">
             <span class="material-icons text-green-400 text-lg mt-0.5">refresh</span>
-            Pots tornar al llistat de vols i intentar-ho de nou.
+            Pots tornar a provar de comprar els bitllets si encara queden seients lliures.
           </li>
         </ul>
       </div>
 
       <!-- Accions -->
       <div class="flex flex-col gap-3">
-        <button
+        <button v-if="volId"
+          class="w-full bg-primary py-4 rounded-xl font-bold text-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
+          @click="tornarTentar">
+          <span class="material-icons">replay</span>
+          Tornar-ho a intentar
+        </button>
+        <button v-else
           class="w-full bg-primary py-4 rounded-xl font-bold text-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
           @click="tornarVols">
           <span class="material-icons">flight_takeoff</span>
