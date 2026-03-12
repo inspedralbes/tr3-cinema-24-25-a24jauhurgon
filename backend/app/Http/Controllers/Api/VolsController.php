@@ -107,15 +107,17 @@ class VolsController extends Controller
         // Netejar abans de mostrar (esborra els antics del tot de la DB si no tenen vendes)
         $this->netejarVolsPassats();
 
-        // L'historial mostra els vols que:
-        // 1. O bé ja han sortit (dataHoraSortida < ara)
-        // 2. O bé estan marcats manualment com a 'finalitzat'
-        // I A MÉS, només mostra els vols d'AVUI (quan s'acabi el dia, la pantalla quedarà neta)
+        // 1. O bé ja han sortit i tocaven sortir avui (dataHoraSortida <= ara && date = avui)
+        // 2. O bé s'han forçat a finalitzat AVUI manualment
         $vols = VolIntern::where('origenIata', 'BCN')
-            ->whereDate('dataHoraSortida', now()->toDateString()) // Només els d'avui
             ->where(function ($query) {
-                $query->where('dataHoraSortida', '<', now())
-                      ->orWhere('estat_venda', 'finalitzat');
+                $query->where(function ($sub) {
+                    $sub->whereDate('dataHoraSortida', now()->toDateString())
+                        ->where('dataHoraSortida', '<', now());
+                })->orWhere(function ($sub) {
+                    $sub->where('estat_venda', 'finalitzat')
+                        ->whereDate('updated_at', now()->toDateString());
+                });
             })
             ->with(['modelAvio', 'bitllets'])
             ->orderBy('dataHoraSortida', 'desc')

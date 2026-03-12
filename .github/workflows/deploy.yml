@@ -42,6 +42,7 @@ jobs:
             echo "SANCTUM_STATEFUL_DOMAINS=last24bcn.daw.inspedralbes.cat" >> backend/.env
             echo "DB_CONNECTION=mysql" >> backend/.env
             echo "DB_HOST=db" >> backend/.env
+            echo "SOCKET_SERVER_URL=http://socket:3001" >> backend/.env
             echo "DB_PORT=3306" >> backend/.env
             echo "DB_DATABASE=ultimahorabcn_db" >> backend/.env
             echo "DB_USERNAME=root" >> backend/.env
