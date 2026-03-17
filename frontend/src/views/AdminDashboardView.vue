@@ -97,10 +97,10 @@ export default {
     <div class="max-w-7xl mx-auto p-6">
       <header class="mb-6 sm:mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
         <div>
-          <h1 class="text-3xl font-bold tracking-tight text-white mb-2">
-            <span class="material-icons align-middle mr-2 text-primary">admin_panel_settings</span>
-            Dashboard <span class="text-slate-500 font-normal">Sales Simulator</span>
-          </h1>
+          <div class="inline-flex w-10 h-10 rounded-lg overflow-hidden shadow-lg shadow-black/40 align-middle mr-2 mt-[-4px]">
+            <img src="/logo.png" alt="Logo" class="w-full h-full object-cover mix-blend-screen" />
+          </div>
+          Dashboard <span class="text-slate-500 font-normal">Sales Simulator</span>
           <p class="text-slate-400">Monitorització de vols entrants i manual override d'estats de venda.</p>
         </div>
         <div class="flex flex-wrap items-center gap-3">
@@ -147,8 +147,8 @@ export default {
               <!-- Vol Info -->
               <td class="p-4 align-top">
                 <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-slate-800 text-slate-300">
-                    <span class="material-icons text-lg">flight_takeoff</span>
+                  <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-slate-800 overflow-hidden">
+                    <img src="/logo.png" alt="Logo" class="w-full h-full object-cover mix-blend-screen" />
                   </div>
                   <div>
                     <div class="font-bold text-lg text-white mb-0.5">{{ vol.destiIata }}</div>

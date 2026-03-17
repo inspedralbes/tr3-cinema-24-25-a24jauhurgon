@@ -63,10 +63,10 @@ export default {
     <!-- Header -->
     <header class="w-full border-b border-primary/10 px-8 py-4 flex justify-between items-center bg-[var(--color-background-dark)]/50 backdrop-blur-md sticky top-0 z-50">
       <div class="flex items-center gap-3">
-        <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-          <span class="material-icons text-white text-xl">flight_takeoff</span>
+        <div class="w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden shadow-lg shadow-black/20">
+          <img src="/logo.png" alt="Logo" class="w-full h-full object-cover mix-blend-screen" />
         </div>
-        <span class="font-extrabold tracking-tight text-xl">BCN<span class="text-primary">JET</span></span>
+        <span class="font-extrabold tracking-tight text-xl">last24<span class="text-primary">bcn</span></span>
       </div>
       <div class="flex items-center gap-4 text-sm font-medium text-slate-500">
         <span class="flex items-center gap-1.5">

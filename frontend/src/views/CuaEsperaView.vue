@@ -47,11 +47,11 @@ export default {
 
     <!-- Nav -->
     <nav class="relative z-10 flex items-center justify-between px-8 py-6">
-      <div class="flex items-center gap-2">
-        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-          <span class="material-icons text-white">flight_takeoff</span>
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden shadow-lg shadow-black/20">
+          <img src="/logo.png" alt="Logo" class="w-full h-full object-cover mix-blend-screen" />
         </div>
-        <span class="text-xl font-extrabold tracking-tight">BCN<span class="text-primary">JET</span></span>
+        <span class="font-extrabold tracking-tight text-xl">last24<span class="text-primary">bcn</span></span>
       </div>
       <div class="flex items-center gap-6">
         <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">

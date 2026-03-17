@@ -130,11 +130,11 @@ export default {
         </header>
 
         <!-- Carregant -->
-        <div v-if="volsStore.carregant && volsStore.vols.length === 0" class="flex items-center justify-center py-20">
-          <div class="flex flex-col items-center gap-4">
-            <span class="material-icons text-primary text-4xl animate-spin">sync</span>
-            <p class="text-slate-400">Carregant vols...</p>
+        <div v-if="volsStore.carregant && volsStore.vols.length === 0" class="flex flex-col items-center justify-center py-24 gap-6">
+          <div class="w-16 h-16 overflow-hidden rounded-2xl pulse-slow">
+             <img src="/logo.png" alt="Logo" class="w-full h-full object-cover mix-blend-screen" />
           </div>
+          <p class="text-slate-500 font-medium tracking-wide">Analitzant rutes en temps real...</p>
         </div>
 
         <!-- Grid de vols -->
@@ -144,23 +144,25 @@ export default {
 
         <!-- Sense vols -->
         <div v-if="!volsStore.carregant && volsFiltrats.length === 0" class="text-center py-20">
-          <span class="material-icons text-slate-600 text-6xl mb-4">flight_takeoff</span>
+          <div class="w-24 h-24 mx-auto mb-6 overflow-hidden rounded-2xl opacity-40 grayscale group-hover:grayscale-0 transition-all">
+            <img src="/logo.png" alt="last24bcn Logo" class="w-full h-full object-cover mix-blend-screen" />
+          </div>
           <p class="text-slate-400 text-lg">No s'han trobat vols en aquesta finestra temporal.</p>
-          <button class="mt-4 text-primary hover:underline" @click="canviarFinestra(1440)">Ampliar a 24 hores</button>
+          <button class="mt-4 text-primary hover:underline font-bold" @click="canviarFinestra(1440)">Ampliar a 24 hores</button>
         </div>
 
         <!-- Indicador alta demanda -->
         <div v-if="volsFiltrats.length > 0" class="mt-12 p-6 rounded-2xl border border-primary/20 bg-primary/5 flex items-center justify-between">
           <div class="flex items-center gap-4">
             <div class="flex -space-x-3">
-              <div class="w-10 h-10 rounded-full border-2 border-[var(--color-background-dark)] bg-primary flex items-center justify-center text-xs font-bold text-white">
-                <span class="material-icons text-sm">person</span>
+              <div class="w-10 h-10 rounded-full border-2 border-[var(--color-background-dark)] overflow-hidden bg-slate-800">
+                <img src="/logo.png" class="w-full h-full object-cover mix-blend-screen" />
               </div>
               <div class="w-10 h-10 rounded-full border-2 border-[var(--color-background-dark)] bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-400">+42</div>
             </div>
             <div>
               <p class="text-sm font-bold">Mode Alta Demanda</p>
-              <p class="text-xs text-slate-500">Sistema de cua activat per garantir reserves justes.</p>
+              <p class="text-xs text-slate-500">Sistema de cua actiu per a garantir reserves justes.</p>
             </div>
           </div>
         </div>

@@ -171,8 +171,8 @@ export default {
     <header class="border-b border-primary/10 bg-white/5 backdrop-blur-md sticky top-0 z-50">
       <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
         <div class="flex items-center gap-4">
-          <div class="bg-primary p-1.5 rounded-lg">
-            <span class="material-icons text-white">flight_takeoff</span>
+          <div class="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center border border-primary/30 overflow-hidden shadow-lg shadow-black/20">
+            <img src="/logo.png" alt="Logo" class="w-full h-full object-cover mix-blend-screen" />
           </div>
           <div v-if="volsStore.volActual">
             <h1 class="text-lg font-bold leading-none">Vol {{ volsStore.volActual.externalId || 'BCN-' + volId }}</h1>
