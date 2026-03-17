@@ -31,6 +31,7 @@ services:
       DB_USERNAME: root
       DB_PASSWORD: password
       FRONTEND_URL: http://localhost:5173
+      SOCKET_SERVER_URL: http://socket:3001
     depends_on:
       - db
 
