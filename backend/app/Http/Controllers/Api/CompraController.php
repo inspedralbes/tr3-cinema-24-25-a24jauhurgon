@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\BitlletComprat;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Jobs\EmitreSocketEvent;
 
 // Controlador de compra: holds, seatmap, confirmar compra
 class CompraController extends Controller
@@ -400,15 +401,7 @@ class CompraController extends Controller
      */
     protected function notificarSocket($room, $event, $payload)
     {
-        try {
-            \Illuminate\Support\Facades\Http::timeout(0.2)->post('http://socket:3002/emit', [
-                'room' => $room,
-                'event' => $event,
-                'payload' => $payload
-            ]);
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error("Error Socket emit: " . $e->getMessage());
-        }
+        EmitreSocketEvent::dispatch($event, $payload, $room)->afterResponse();
     }
 
     /**
@@ -419,14 +412,7 @@ class CompraController extends Controller
      */
     protected function notificarMonitoritzacio()
     {
-        try {
-            \Illuminate\Support\Facades\Http::timeout(0.2)->post('http://socket:3002/emit', [
-                'event' => 'monitoritzacio_actualitzada',
-                'payload' => []
-            ]);
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error("Error Socket monitoritzacio: " . $e->getMessage());
-        }
+        EmitreSocketEvent::dispatch('monitoritzacio_actualitzada', [], '')->afterResponse();
     }
 
     /**

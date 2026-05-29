@@ -11,6 +11,7 @@ use App\Models\HoldSeient;
 use App\Models\Bitllet;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Jobs\EmitreSocketEvent;
 use Illuminate\Support\Facades\Http;
 
 // Controlador d'administració: CRUD de vols i avions, monitorització
@@ -155,6 +156,9 @@ class AdminController extends Controller
             'capacitat' => 10,
         ]);
 
+        EmitreSocketEvent::dispatch('vols_modificats', [], '')->afterResponse();
+            EmitreSocketEvent::dispatch('monitoritzacio_actualitzada', [], '')->afterResponse();
+
         return response()->json(['vol' => $vol->load('modelAvio')], 201);
     }
 
@@ -189,6 +193,9 @@ class AdminController extends Controller
 
         $vol->save();
 
+        EmitreSocketEvent::dispatch('vols_modificats', [], '')->afterResponse();
+            EmitreSocketEvent::dispatch('monitoritzacio_actualitzada', [], '')->afterResponse();
+
         return response()->json(['vol' => $vol->load('modelAvio')]);
     }
 
@@ -207,6 +214,10 @@ class AdminController extends Controller
         }
 
         $vol->delete();
+
+        EmitreSocketEvent::dispatch('vols_modificats', [], '')->afterResponse();
+            EmitreSocketEvent::dispatch('monitoritzacio_actualitzada', [], '')->afterResponse();
+
         return response()->json(['missatge' => 'Vol eliminat.']);
     }
 
@@ -238,25 +249,13 @@ class AdminController extends Controller
         }
 
         // Emetre event Socket.IO per a la llista de vols pública i Dashboard
-        try {
-            Http::timeout(0.2)->post('http://socket:3002/emit', [
-                'event' => 'vol_estat_actualitzat',
-                'payload' => [
+        EmitreSocketEvent::dispatch('vol_estat_actualitzat', [
                     'volId' => $vol->id,
                     'nou_estat' => $vol->estat_venda
-                ]
-            ]);
-        } catch (\Exception $e) {
-            \Log::warning("No s'ha pogut emetre 'vol_estat_actualitzat': " . $e->getMessage());
-        }
+                ], '')->afterResponse();
 
         // També la monitorització general ha canviat per al Dashboard
-        try {
-            Http::timeout(0.2)->post('http://socket:3002/emit', [
-                'event' => 'monitoritzacio_actualitzada',
-                'payload' => []
-            ]);
-        } catch (\Exception $e) {}
+        EmitreSocketEvent::dispatch('monitoritzacio_actualitzada', [], '')->afterResponse();
 
         return response()->json(['missatge' => 'Estat de venda actualitzat.', 'estat_venda' => $vol->estat_venda]);
     }
@@ -312,25 +311,15 @@ class AdminController extends Controller
         $bitllet->save();
 
         // Notificar al Dashboard que la barra ha de pujar
-        try {
-            Http::timeout(1)->post('http://socket:3002/emit', [
-                'event' => 'barreta_embarcament_actualitzada',
-                'payload' => [
+        EmitreSocketEvent::dispatch('barreta_embarcament_actualitzada', [
                     'volId' => $bitllet->volId,
                     'compraId' => $bitllet->compraId,
                     'fila' => $bitllet->fila,
                     'columna' => $bitllet->columna
-                ]
-            ]);
-        } catch (\Exception $e) {}
+                ], '')->afterResponse();
 
         // També notificar monitorització general per refrescar estadístiques
-        try {
-            Http::timeout(1)->post('http://socket:3002/emit', [
-                'event' => 'monitoritzacio_actualitzada',
-                'payload' => []
-            ]);
-        } catch (\Exception $e) {}
+        EmitreSocketEvent::dispatch('monitoritzacio_actualitzada', [], '')->afterResponse();
 
         return response()->json([
             'missatge' => 'Passatger embarcat correctament.',
@@ -432,18 +421,10 @@ class AdminController extends Controller
         $usuari->save();
 
         // Emetre event Socket.IO per a temps real
-        try {
-            Http::timeout(2)->post('http://socket:3002/emit', [
-                'event' => 'rol_actualitzat',
-                'payload' => [
+        EmitreSocketEvent::dispatch('rol_actualitzat', [
                     'usuari_id' => $usuari->id,
                     'nou_rol' => $usuari->rol
-                ]
-            ]);
-        } catch (\Exception $e) {
-            // Falla de forma silenciosa si el socket no està disponible
-            \Log::warning("No s'ha pogut emetre 'rol_actualitzat' cap al Socket.IO");
-        }
+                ], '')->afterResponse();
 
         return response()->json([
             'missatge' => 'Rol d\'usuari actualitzat.',

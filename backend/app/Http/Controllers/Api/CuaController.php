@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use App\Jobs\EmitreSocketEvent;
 
 // Controlador de cua: entrar, consultar posició, sortir
 class CuaController extends Controller
@@ -227,12 +228,7 @@ class CuaController extends Controller
      */
     protected function notificarMonitoritzacio()
     {
-        try {
-            Http::timeout(0.2)->post('http://socket:3002/emit', [
-                'event' => 'monitoritzacio_actualitzada',
-                'payload' => []
-            ]);
-        } catch (\Exception $e) {}
+        EmitreSocketEvent::dispatch('monitoritzacio_actualitzada', [], '')->afterResponse();
     }
 
     /**
@@ -240,14 +236,9 @@ class CuaController extends Controller
      */
     protected function notificarAutoritzacio($volId, $clientId)
     {
-        try {
-            Http::timeout(0.2)->post('http://socket:3002/emit', [
-                'event' => 'usuari_autoritzat',
-                'payload' => [
-                    'volId' => (int)$volId,
-                    'clientId' => $clientId
-                ]
-            ]);
-        } catch (\Exception $e) {}
+        EmitreSocketEvent::dispatch('usuari_autoritzat', [
+            'volId' => (int)$volId,
+            'clientId' => $clientId
+        ], '')->afterResponse();
     }
 }
