@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Jobs\EmitreSocketEvent;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\ValidationException;
@@ -38,12 +39,7 @@ class AuthController extends Controller
         $token = $usuari->createToken('auth-token')->plainTextToken;
 
         // Notificar al panell d'Admin en temps real
-        try {
-            Http::timeout(0.2)->post('http://socket:3002/emit', [
-                'event' => 'nou_usuari_registrat',
-                'payload' => $usuari
-            ]);
-        } catch (\Exception $e) { /* Silenciós si falla el socket */ }
+        EmitreSocketEvent::dispatch('nou_usuari_registrat', $usuari->toArray(), '')->afterResponse();
 
         return response()->json([
             'usuari' => $usuari,
@@ -164,12 +160,7 @@ class AuthController extends Controller
             $token = $usuari->createToken('auth-token')->plainTextToken;
 
             if ($esNou) {
-                try {
-                    Http::timeout(0.2)->post('http://socket:3002/emit', [
-                        'event' => 'nou_usuari_registrat',
-                        'payload' => $usuari
-                    ]);
-                } catch (\Exception $e) { /* Silenciós si falla el socket */ }
+                EmitreSocketEvent::dispatch('nou_usuari_registrat', $usuari->toArray(), '')->afterResponse();
             }
 
             // Redirigim al frontend amb el token a la URL

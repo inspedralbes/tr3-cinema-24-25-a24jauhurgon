@@ -47,10 +47,33 @@ services:
     volumes:
       - ./socket-server:/app
 
+  queue-worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: last24_queue
+    restart: unless-stopped
+    command: php artisan queue:work --sleep=1 --tries=3 --timeout=10
+    volumes:
+      - ./backend:/app
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: ultimahorabcn_db
+      DB_USERNAME: root
+      DB_PASSWORD: password
+      QUEUE_CONNECTION: database
+    depends_on:
+      - db
+      - socket
+
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      target: build-stage
+    command: npm run dev -- --host
     container_name: last24_frontend
     restart: unless-stopped
     ports:
