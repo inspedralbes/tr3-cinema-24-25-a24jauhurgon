@@ -12,8 +12,7 @@ export var useCuaStore = defineStore('cua', {
             ticketExpiraAt: null,
             volId: null,
             carregant: false,
-            error: null,
-            intervalId: null
+            error: null
         }
     },
 
@@ -77,37 +76,25 @@ export var useCuaStore = defineStore('cua', {
             })
         },
 
-        // Iniciar polling de la posició i escolta de Sockets per a immediatesa
+        // Escolta de Sockets en temps real
         iniciarPolling: function (volId, clientId) {
             var self = this
             self.aturarPolling()
 
-            // 1. WebSocket per a immediatesa
             socketService.onUsuariAutoritzat(function (data) {
-                // data = { volId, clientId }
                 if (data.volId == volId && data.clientId == clientId) {
-                    self.consultarPosicio(volId, clientId) // Forçar refresh final
+                    self.consultarPosicio(volId, clientId)
                 }
             })
 
             socketService.onCuaCanvi(function () {
                 self.consultarPosicio(volId, clientId)
             })
-
-            // 2. Polling de fallback (cada 5 segons, menys agressiu ja que tenim sockets)
-            self.intervalId = setInterval(function () {
-                self.consultarPosicio(volId, clientId).catch(function () {
-                    // Silenciar errors de polling
-                })
-            }, 5000)
         },
 
-        // Aturar polling
+        // Neteja manual
         aturarPolling: function () {
-            if (this.intervalId) {
-                clearInterval(this.intervalId)
-                this.intervalId = null
-            }
+            // (El socket desconecta listeners generalment via socketService)
         },
 
         // Sortir de la cua

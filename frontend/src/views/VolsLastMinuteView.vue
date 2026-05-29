@@ -12,8 +12,7 @@ export default {
   data: function () {
     return {
       cercaDesti: '',
-      finestraActiva: 1440,
-      intervalRefresh: null
+      finestraActiva: 1440
     }
   },
   computed: {
@@ -62,10 +61,10 @@ export default {
     self.volsStore.carregarVols(self.finestraActiva)
     self.volsStore.carregarTarifes()
 
-    // Auto-refresh cada 30 segons com a fallback, però preferim WebSockets
-    self.intervalRefresh = setInterval(function () {
+    // Escoltar canvis estructurals a la base de dades (vols creats, esborrats, etc.) per Admin
+    socketService.onVolsModificats(() => {
       self.volsStore.carregarVols(self.finestraActiva)
-    }, 30000)
+    })
 
     // Escoltar canvis d'estat de venda (Obert/Tancat) instantanis (ex: des de l'Admin Panel)
     socketService.onVolEstatActualitzat((data) => {
@@ -78,9 +77,6 @@ export default {
     })
   },
   beforeUnmount: function () {
-    if (this.intervalRefresh) {
-      clearInterval(this.intervalRefresh)
-    }
     socketService.netejarListeners();
   }
 }
