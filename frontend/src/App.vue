@@ -7,12 +7,29 @@ import socketService from './services/socketService'
 export default {
   name: 'App',
   components: { ToastNotification: ToastNotification },
+  data() {
+    return {
+      temaActual: 'dark'
+    }
+  },
   methods: {
     // Mètode global per mostrar toasts des de qualsevol component fill
     mostrarToast: function (text, tipus) {
       if (this.$refs.toast) {
         this.$refs.toast.afegir(text, tipus)
       }
+    },
+    setTheme: function (theme) {
+      this.temaActual = theme
+      document.documentElement.dataset.theme = theme
+      document.body.dataset.theme = theme
+      localStorage.setItem('app-theme', theme)
+    },
+    initTheme: function () {
+      const storedTheme = localStorage.getItem('app-theme')
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+      const theme = storedTheme || (prefersDark ? 'dark' : 'light')
+      this.setTheme(theme)
     }
   },
   provide: function () {
@@ -44,12 +61,14 @@ export default {
         }
       }
     })
+
+    this.initTheme()
   }
 }
 </script>
 
 <template>
-  <div id="app-root" class="min-h-screen bg-[var(--color-background-dark)] text-slate-100">
+  <div id="app-root" class="min-h-screen bg-[var(--color-background)] text-[var(--color-text)]">
     <router-view />
     <ToastNotification ref="toast" />
   </div>
