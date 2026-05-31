@@ -16,6 +16,11 @@ export default {
     enllaçEnrere: { type: String, default: '/vols' }
   },
   emits: ['accio', 'enrere'],
+  data() {
+    return {
+      temaActual: 'dark'
+    }
+  },
   computed: {
     authStore: function () {
       return useAuthStore()
@@ -46,13 +51,23 @@ export default {
       self.authStore.logout().then(function () {
         self.$router.push('/')
       })
+    },
+    toggleTheme: function () {
+      var nouTema = this.temaActual === 'dark' ? 'light' : 'dark'
+      this.temaActual = nouTema
+      document.documentElement.dataset.theme = nouTema
+      document.body.dataset.theme = nouTema
+      localStorage.setItem('app-theme', nouTema)
     }
+  },
+  mounted() {
+    this.temaActual = document.documentElement.dataset.theme || localStorage.getItem('app-theme') || 'dark'
   }
 }
 </script>
 
 <template>
-  <header class="w-full border-b border-primary/10 px-6 py-4 flex justify-between items-center bg-[var(--color-background-dark)]/80 backdrop-blur-xl sticky top-0 z-50">
+  <header class="w-full border-b border-[var(--color-border)] px-6 py-4 flex justify-between items-center bg-[var(--color-surface)]/90 backdrop-blur-xl sticky top-0 z-50">
     <!-- Esquerra: Logo i Navegació principal -->
     <div class="flex items-center gap-8">
       <div class="flex items-center gap-3 cursor-pointer" @click="anarEnrere">
@@ -100,6 +115,21 @@ export default {
                    class="mr-2 px-3 py-1.5 bg-primary/20 text-primary border border-primary/30 rounded-lg text-[10px] font-bold tracking-widest uppercase hover:bg-primary hover:text-white transition-colors flex items-center gap-1">
         <span class="material-icons text-[14px]">admin_panel_settings</span>Admin
       </router-link>
+
+      <!-- Botó de mode clar/oscuro -->
+      <button @click="toggleTheme"
+              class="mr-2 inline-flex items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] p-1 text-sm font-semibold text-[var(--color-text)] shadow-sm shadow-black/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/40"
+              :aria-pressed="temaActual === 'dark'"
+              :aria-label="temaActual === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'">
+        <span class="sr-only">Alternar tema</span>
+        <span class="inline-flex h-10 w-16 items-center rounded-full p-1"
+              :class="temaActual === 'dark' ? 'bg-slate-700' : 'bg-slate-300'">
+          <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white text-slate-900 shadow transition-transform duration-200"
+                :class="temaActual === 'dark' ? 'translate-x-6' : 'translate-x-0'">
+            <span class="material-icons text-[18px]">{{ temaActual === 'dark' ? 'light_mode' : 'dark_mode' }}</span>
+          </span>
+        </span>
+      </button>
 
       <!-- Estatus de l'usuari actual -->
       <div v-if="authStore.estaAutenticat" 

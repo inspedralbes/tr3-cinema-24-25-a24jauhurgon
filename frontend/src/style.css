@@ -20,12 +20,35 @@
   --radius-full: 9999px;
 }
 
+:root {
+  --color-background: #101922;
+  --color-background-dark: #0f172a;
+  --color-background-light: #f6f7f8;
+  --color-text: #f8fafc;
+  --color-text-muted: #94a3b8;
+  --color-surface: rgba(255,255,255,0.05);
+  --color-border: rgba(148,163,184,0.15);
+}
+
+:root[data-theme='light'] {
+  --color-background: #f6f7f8;
+  --color-background-dark: #e2e8f0;
+  --color-background-light: #ffffff;
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+  --color-surface: rgba(15,23,42,0.05);
+  --color-border: rgba(15,23,42,0.12);
+}
+
 /* ============================================
    Estils Globals
    ============================================ */
 
 body {
   font-family: var(--font-display);
+  color: var(--color-text);
+  background: var(--color-background);
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 /* Scrollbar personalitzat */
