@@ -85,3 +85,4 @@ yarn-error.log*
 last24_dbdata/
 *.sqlite
 **/*.sqlite
+skills-lock.json
