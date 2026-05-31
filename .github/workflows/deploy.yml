@@ -15,10 +15,19 @@ jobs:
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          APP_KEY: ${{ secrets.APP_KEY }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          MAIL_ENCRYPTION: ${{ secrets.MAIL_ENCRYPTION }}
+          MAIL_FROM_ADDRESS: ${{ secrets.MAIL_FROM_ADDRESS }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
+          envs: APP_KEY,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,MAIL_ENCRYPTION,MAIL_FROM_ADDRESS,MAIL_PASSWORD,RESEND_API_KEY
           script: |
             sudo mkdir -p /var/www/last24bcn
             sudo chown -R $USER:$USER /var/www/last24bcn
@@ -33,7 +42,12 @@ jobs:
             echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> backend/.env
             echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> backend/.env
             echo "RESEND_KEY=${{ secrets.RESEND_API_KEY }}" >> backend/.env
-            echo "MAIL_MAILER=resend" >> backend/.env
+            echo "MAIL_MAILER=smtp" >> backend/.env
+            echo "MAIL_HOST=sandbox.smtp.mailtrap.io" >> backend/.env
+            echo "MAIL_PORT=2525" >> backend/.env
+            echo "MAIL_USERNAME=0f69cc24726017" >> backend/.env
+            echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> backend/.env
+            echo "MAIL_ENCRYPTION=${{ secrets.MAIL_ENCRYPTION }}" >> backend/.env
             echo "APP_ENV=production" >> backend/.env
             echo "APP_DEBUG=false" >> backend/.env
             echo "LOG_CHANNEL=stderr" >> backend/.env

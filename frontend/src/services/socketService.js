@@ -172,6 +172,7 @@ function netejarListeners() {
         socket.off('monitoritzacio_actualitzada')
         socket.off('vol_estat_actualitzat')
         socket.off('usuari_autoritzat')
+        socket.off('vols_modificats')
     }
 }
 
@@ -183,6 +184,12 @@ function desconnectar() {
         socket = null
         connectat = false
     }
+}
+
+// Emès quan s'afegeixen, s'alteren o s'esborren vols des de l'admin
+function onVolsModificats(callback) {
+    var s = connectar()
+    s.on('vols_modificats', callback)
 }
 
 // Exportar funcions
@@ -202,6 +209,7 @@ export default {
     onBarretaEmbarcamentActualitzada: onBarretaEmbarcamentActualitzada,
     onMonitoritzacioActualitzada: onMonitoritzacioActualitzada,
     onVolEstatActualitzat: onVolEstatActualitzat,
+    onVolsModificats: onVolsModificats,
     identificarUsuari: identificarUsuari,
     onUsuariAutoritzat: onUsuariAutoritzat,
     netejarListeners: netejarListeners,

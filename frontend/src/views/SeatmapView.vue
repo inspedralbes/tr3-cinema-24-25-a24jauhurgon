@@ -11,9 +11,7 @@ export default {
   name: 'SeatmapView',
   components: { AppHeader: AppHeader, CountdownTimer: CountdownTimer },
   data: function () {
-    return {
-      refreshInterval: null
-    }
+    return {}
   },
   inject: ['mostrarToast'],
   computed: {
@@ -149,16 +147,8 @@ export default {
     self.authStore.inicialitzarClient()
     self.volsStore.carregarDetall(self.volId)
     self.compraStore.carregarSeatmap(self.volId)
-
-    // Auto-refresh seatmap cada 15 segons (backup; socket gestiona temps real)
-    self.refreshInterval = setInterval(function () {
-      self.compraStore.carregarSeatmap(self.volId)
-    }, 15000)
   },
   beforeUnmount: function () {
-    if (this.refreshInterval) {
-      clearInterval(this.refreshInterval)
-    }
     // Netejar connexió socket quan sortim de la vista
     this.compraStore.aturarSocket()
   }
