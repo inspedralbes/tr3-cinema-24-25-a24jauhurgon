@@ -15,14 +15,53 @@ jobs:
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          APP_KEY: ${{ secrets.APP_KEY }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          MAIL_ENCRYPTION: ${{ secrets.MAIL_ENCRYPTION }}
+          MAIL_FROM_ADDRESS: ${{ secrets.MAIL_FROM_ADDRESS }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
+          envs: APP_KEY,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,MAIL_ENCRYPTION,MAIL_FROM_ADDRESS,MAIL_PASSWORD,RESEND_API_KEY
           script: |
             cd ~/tr3-cinema-24-25-a24jauhurgon
             git checkout prod
             git pull origin prod
+            
+            cat <<EOF > backend/.env
+            APP_NAME=last24bcn
+            APP_ENV=production
+            APP_KEY=$APP_KEY
+            APP_DEBUG=false
+            APP_URL=http://localhost
+            DB_CONNECTION=mysql
+            DB_HOST=db
+            DB_PORT=3306
+            DB_DATABASE=ultimahorabcn_db
+            DB_USERNAME=root
+            DB_PASSWORD=password
+            SESSION_DRIVER=database
+            QUEUE_CONNECTION=database
+            CACHE_STORE=database
+            MAIL_MAILER=smtp
+            MAIL_HOST=sandbox.smtp.mailtrap.io
+            MAIL_PORT=2525
+            MAIL_USERNAME=0f69cc24726017
+            MAIL_PASSWORD=$MAIL_PASSWORD
+            MAIL_ENCRYPTION=$MAIL_ENCRYPTION
+            MAIL_FROM_ADDRESS="$MAIL_FROM_ADDRESS"
+            MAIL_FROM_NAME="last24bcn"
+            RESEND_API_KEY=$RESEND_API_KEY
+            GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
+            GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
+            GOOGLE_REDIRECT_URI=http://localhost:8000/api/auth/google/callback
+            EOF
+            
             docker-compose -f docker-compose.prod.yml up -d --build
             docker exec last24_backend php artisan migrate --force
             docker exec last24_backend php artisan db:seed --force
